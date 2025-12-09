@@ -1,24 +1,31 @@
 package ipss.cl.sgpp.model;
 
-import jakarta.persistence.*;
-import lombok.Data;
-import java.util.List;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Data
+@Table(name = "empresas")
+@Getter
+@Setter
 public class Empresa {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
-    private String nombre; // Nombre de la empresa 
+    @Column(nullable=false)
+    private String nombre;
 
-    private String direccion; // Dirección de la empresa 
+    @Column(nullable=false, unique=true)
+    private String rut;
 
-    private String telefono; // Teléfono de la empresa 
+    private String direccion;
 
-    @OneToMany(mappedBy = "empresa")
-    private List<Practica> practicas;
+    private String contactoEmial;
 }
