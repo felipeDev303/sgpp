@@ -1,6 +1,9 @@
 package ipss.cl.sgpp.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent; // Para fechas
+import jakarta.validation.constraints.NotBlank; // Para Strings
+import jakarta.validation.constraints.NotNull; // Para IDs y objetos
 import lombok.Data;
 import java.time.LocalDate;
 
@@ -12,30 +15,34 @@ public class Practica {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private LocalDate fechaInicio; // Fecha de inicio de la práctica 
+    // Asegura que la fecha de inicio no sea nula y sea en el presente o futuro
+    @NotNull(message = "La fecha de inicio es obligatoria")
+    @FutureOrPresent(message = "La fecha de inicio no puede ser en el pasado")
+    private LocalDate fechaInicio; 
 
-    private LocalDate fechaTermino; // Fecha de término de la práctica 
+    @NotNull(message = "La fecha de término es obligatoria")
+    private LocalDate fechaTermino; // Validación de la lógica (inicio antes de término) se hace en el Service/DTO.
 
+    @NotBlank(message = "La descripción de actividades es obligatoria")
     @Column(columnDefinition = "TEXT")
-    private String descripcionActividades; // Descripción de las actividades 
+    private String descripcionActividades;
     
-    // Relación ManyToOne con Estudiante (El FK de Estudiante va aquí)
+    // Validamos que los objetos relacionados (IDs) no sean nulos
+    @NotNull(message = "El estudiante es obligatorio")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "estudiante_id", nullable = false)
     private Estudiante estudiante;
 
-    // Relación ManyToOne con Profesor Supervisor (El FK del Profesor va aquí)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profesor_id")
     private Profesor profesorSupervisor;
     
-    // Relación ManyToOne con Empresa
+    @NotNull(message = "La empresa es obligatoria")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "empresa_id", nullable = false)
     private Empresa empresa;
 
-    // Relación ManyToOne con Jefe Directo (Supervisor de la empresa)
+    @NotNull(message = "El jefe directo es obligatorio")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "jefe_directo_id", nullable = false)
     private JefeDirecto jefeDirecto;
