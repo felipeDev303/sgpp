@@ -12,7 +12,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class Profesor extends Usuario {
 
-    // Otros campos específicos del profesor si son necesarios (ej. departamento)
+   
 
     // Un profesor puede supervisar múltiples prácticas 
     @OneToMany(mappedBy = "profesorSupervisor")
