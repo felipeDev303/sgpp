@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class PracticaController {
     // =====================================================================
     // Mapea peticiones POST a /api/v1/practicas
     @PostMapping 
-    public ResponseEntity<Practica> crearPractica(@RequestBody Practica practica) {
+    public ResponseEntity<Practica> crearPractica(@Valid @RequestBody Practica practica) {
         Practica nuevaPractica = practicaService.guardarPractica(practica);
         // Retornamos el estado 201 Created junto con la práctica guardada
         return new ResponseEntity<>(nuevaPractica, HttpStatus.CREATED); 
@@ -54,7 +55,7 @@ public class PracticaController {
     // =====================================================================
     // Mapea peticiones PUT a /api/v1/practicas/{id}
     @PutMapping("/{id}")
-    public ResponseEntity<Practica> actualizarPractica(@PathVariable Long id, @RequestBody Practica practicaActualizada) {
+    public ResponseEntity<Practica> actualizarPractica(@PathVariable Long id, @Valid @RequestBody Practica practicaActualizada) {
         try {
             Practica practica = practicaService.actualizarPractica(id, practicaActualizada);
             return ResponseEntity.ok(practica);
