@@ -1,0 +1,22 @@
+package ipss.cl.sgpp.model;
+
+import jakarta.persistence.*;
+import lombok.Data;
+import java.util.List;
+
+@Entity
+@Data
+public class JefeDirecto {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, length = 100)
+    private String nombre; // Nombre del supervisor 
+
+    private String contacto; // Contacto del supervisor 
+    
+    @OneToMany(mappedBy = "jefeDirecto")
+    private List<Practica> practicasSupervisadas;
+}
