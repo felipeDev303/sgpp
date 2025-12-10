@@ -2,10 +2,10 @@
 
 ## Sistema de Gestión de Prácticas Profesionales
 
-**Fecha de Análisis:** 9 de diciembre de 2025  
+**Fecha de Análisis:** 10 de diciembre de 2025  
 **Versión:** 0.0.1-SNAPSHOT  
 **Stack:** Spring Boot 3.5.8, Java 21, PostgreSQL  
-**Rama Actual:** feature/feature-actualizar-documentacion
+**Rama Actual:** feature/custom-exceptions
 
 ---
 
@@ -18,15 +18,15 @@
 | **Capa de Repositorio** | ✅ Completo  | 100%       | 0%        |
 | **Capa de Servicio**    | 🟨 Parcial   | 60%        | 40%       |
 | **Capa de Controlador** | 🟨 Parcial   | 70%        | 30%       |
-| **DTOs**                | ❌ Pendiente | 0%         | 100%      |
+| **DTOs**                | 🟨 Parcial   | 35%        | 65%       |
 | **Seguridad**           | ❌ Pendiente | 0%         | 100%      |
 | **Validaciones**        | 🟨 Parcial   | 40%        | 60%       |
-| **Manejo de Errores**   | ❌ Pendiente | 0%         | 100%      |
+| **Manejo de Errores**   | 🟨 Parcial   | 40%        | 60%       |
 | **Testing**             | ❌ Pendiente | 10%        | 90%       |
 | **Configuración**       | 🟨 Parcial   | 50%        | 50%       |
 | **Documentación API**   | ❌ Pendiente | 0%         | 100%      |
 
-**Avance Global:** 🟨 **48%**
+**Avance Global:** 🟨 **52%**
 
 ---
 
@@ -173,25 +173,36 @@ src/main/java/ipss/cl/sgpp/
 
 ## ❌ Componentes Pendientes
 
-### 1. DTOs (Data Transfer Objects) ❌ 0%
+### 1. DTOs (Data Transfer Objects) 🟨 35%
 
-**Ubicación requerida:** `src/main/java/ipss/cl/sgpp/model/dto/`
+**Ubicación:** `src/main/java/ipss/cl/sgpp/dto/`
 
 ```
 dto/
 ├── request/
-│   ├── PracticaRequestDTO.java       ❌
+│   ├── PracticaRequestDTO.java       ✅ (con validaciones)
 │   ├── EstudianteRequestDTO.java     ❌
 │   ├── LoginRequestDTO.java          ❌
 │   └── UpdatePracticaDTO.java        ❌
-└── response/
-    ├── PracticaResponseDTO.java      ❌
-    ├── EstudianteResponseDTO.java    ❌
-    ├── ErrorResponseDTO.java         ❌
-    └── AuthResponseDTO.java          ❌
+├── response/
+│   ├── PracticaResponseDTO.java      ✅ (con from() method)
+│   ├── EstudianteResponseDTO.java    ❌
+│   └── AuthResponseDTO.java          ❌
+└── common/
+    └── ErrorResponseDTO.java         ✅ (estructura básica)
 ```
 
-**Impacto:** Alto - Los controladores exponen directamente las entidades JPA
+**Implementado:**
+
+- ✅ `PracticaRequestDTO.java` con Bean Validation completa
+- ✅ `PracticaResponseDTO.java` con método factory from()
+- ✅ `ErrorResponseDTO.java` para respuestas de error estandarizadas
+
+**Pendiente:**
+
+- ❌ DTOs para Estudiante, Profesor, Empresa, JefeDirecto
+- ❌ DTOs de autenticación (Login, Register)
+- ❌ Integrar DTOs en controllers y services
 
 ### 2. Seguridad (Spring Security + JWT) ❌ 0%
 
@@ -220,20 +231,30 @@ spring.autoconfigure.exclude=...SecurityAutoConfiguration...
 - ❌ Implementar autorización por roles (ESTUDIANTE, PROFESOR, ADMIN)
 - ❌ Proteger endpoints según perfil
 
-### 3. Manejo Global de Errores ❌ 0%
+### 3. Manejo Global de Errores 🟨 40%
 
-**Ubicación requerida:** `src/main/java/ipss/cl/sgpp/exception/`
+**Ubicación:** `src/main/java/ipss/cl/sgpp/exception/`
 
 ```
 exception/
 ├── GlobalExceptionHandler.java       ❌
-├── ResourceNotFoundException.java    ❌
-├── BusinessException.java            ❌
-├── ValidationException.java          ❌
+├── ResourceNotFoundException.java    ✅ (con campos estructurados)
+├── BusinessException.java            ✅ (con errorCode)
+├── ValidationException.java          ✅ (con Map de errores)
 └── UnauthorizedException.java        ❌
 ```
 
-**Actual:** Uso de `RuntimeException` genérico en servicios
+**Implementado:**
+
+- ✅ `ResourceNotFoundException` con resourceName, fieldName, fieldValue
+- ✅ `BusinessException` con errorCode y causa anidada
+- ✅ `ValidationException` con soporte para múltiples errores por campo
+
+**Pendiente:**
+
+- ❌ `GlobalExceptionHandler` con @RestControllerAdvice
+- ❌ `UnauthorizedException` para errores de seguridad
+- ❌ Integrar excepciones personalizadas en services
 
 ### 4. Validaciones Avanzadas 🟨 40%
 
@@ -457,6 +478,76 @@ private LocalDate fechaTermino;
 
 ---
 
+## 📋 Lista de Tareas - Pull Requests Atómicos
+
+### Sprint 1: DTOs y Manejo de Errores ⚡ Prioridad Alta
+
+- [x] **PR #1:** DTO base structure (ErrorResponseDTO)
+- [x] **PR #2:** Implementar DTOs de Práctica (Request/Response)
+- [x] **PR #3:** Excepciones personalizadas (ResourceNotFound, Business, Validation)
+- [ ] **PR #4:** GlobalExceptionHandler con @RestControllerAdvice
+- [ ] **PR #5:** DTOs de Estudiante (Request/Response)
+- [ ] **PR #6:** DTOs de Profesor (Request/Response)
+- [ ] **PR #7:** DTOs de Empresa y JefeDirecto
+
+### Sprint 2: Refactorización de Servicios y Controladores 🔄
+
+- [ ] **PR #8:** Refactorizar PracticaService para usar DTOs
+- [ ] **PR #9:** Refactorizar PracticaController para usar DTOs
+- [ ] **PR #10:** Implementar validaciones de lógica de negocio en PracticaService
+- [ ] **PR #11:** Agregar validación de fechas y estados en Practica
+- [ ] **PR #12:** Implementar servicios para Estudiante con DTOs
+- [ ] **PR #13:** Implementar servicios para Profesor con DTOs
+- [ ] **PR #14:** Implementar servicios para Empresa con DTOs
+
+### Sprint 3: Migraciones y Base de Datos 🗄️
+
+- [ ] **PR #15:** V2\_\_Create_Practicas_Table.sql
+- [ ] **PR #16:** V3\_\_Add_Indexes.sql (optimización de queries)
+- [ ] **PR #17:** V4\_\_Add_Constraints.sql (foreign keys, checks)
+- [ ] **PR #18:** V5\_\_Initial_Data.sql (datos de prueba)
+- [ ] **PR #19:** Configurar JPA Auditing (@CreatedDate, @LastModifiedDate)
+- [ ] **PR #20:** Agregar campos de auditoría a todas las entidades
+
+### Sprint 4: Seguridad y Autenticación 🔐 Prioridad Alta
+
+- [ ] **PR #21:** SecurityConfig básico con JWT
+- [ ] **PR #22:** JwtTokenProvider y JwtAuthenticationFilter
+- [ ] **PR #23:** CustomUserDetailsService
+- [ ] **PR #24:** AuthController (login, register)
+- [ ] **PR #25:** DTOs de autenticación (LoginRequest, AuthResponse)
+- [ ] **PR #26:** Proteger endpoints con @PreAuthorize
+- [ ] **PR #27:** UnauthorizedException y manejo en GlobalExceptionHandler
+
+### Sprint 5: Testing 🧪
+
+- [ ] **PR #28:** Tests unitarios de PracticaService con Mockito
+- [ ] **PR #29:** Tests unitarios de PracticaController con MockMvc
+- [ ] **PR #30:** Tests de integración de PracticaRepository con @DataJpaTest
+- [ ] **PR #31:** Tests de validaciones de DTOs
+- [ ] **PR #32:** Tests de excepciones personalizadas
+- [ ] **PR #33:** Tests de autenticación y autorización
+- [ ] **PR #34:** Tests de endpoints protegidos
+
+### Sprint 6: Documentación y Configuración 📚
+
+- [ ] **PR #35:** Agregar Swagger/OpenAPI (springdoc-openapi)
+- [ ] **PR #36:** Documentar endpoints con @Operation y @Tag
+- [ ] **PR #37:** Configurar CORS para frontend
+- [ ] **PR #38:** Configurar perfiles (application-dev.properties, application-prod.properties)
+- [ ] **PR #39:** Configurar Actuator endpoints
+- [ ] **PR #40:** Configurar logging con niveles apropiados
+- [ ] **PR #41:** Agregar validación de variables de entorno
+- [ ] **PR #42:** README.md con instrucciones de instalación
+
+### Progreso Total: 3/42 PRs completados (7%)
+
+**Último PR completado:** #3 - Excepciones personalizadas  
+**Siguiente PR:** #4 - GlobalExceptionHandler  
+**Rama activa:** feature/custom-exceptions
+
+---
+
 ## 📊 Métricas del Proyecto
 
 ### Líneas de Código (Aproximado)
@@ -467,16 +558,17 @@ private LocalDate fechaTermino;
 | Repositorios  | ~50      | ~100      | 50%      |
 | Servicios     | ~80      | ~300      | 27%      |
 | Controladores | ~90      | ~200      | 45%      |
-| DTOs          | 0        | ~200      | 0%       |
+| DTOs          | ~120     | ~200      | 60%      |
+| Excepciones   | ~100     | ~150      | 67%      |
 | Seguridad     | 0        | ~300      | 0%       |
 | Tests         | ~20      | ~500      | 4%       |
-| **Total**     | **~440** | **~1900** | **23%**  |
+| **Total**     | **~660** | **~2050** | **32%**  |
 
 ### Archivos
 
-- **Existentes:** 15 archivos .java
-- **Requeridos:** ~45 archivos .java
-- **Completado:** 33%
+- **Existentes:** 21 archivos .java
+- **Requeridos:** ~50 archivos .java
+- **Completado:** 42%
 
 ---
 
@@ -485,15 +577,17 @@ private LocalDate fechaTermino;
 ### Esta Semana
 
 1. ✅ **HECHO:** Actualizar documentación de estado
-2. 🔲 **SIGUIENTE:** Crear estructura de DTOs
-3. 🔲 Implementar GlobalExceptionHandler
-4. 🔲 Completar migraciones SQL
+2. ✅ **HECHO:** Crear estructura de DTOs (Practica + Error)
+3. ✅ **HECHO:** Implementar excepciones personalizadas
+4. 🔲 **EN PROGRESO:** Implementar GlobalExceptionHandler
+5. 🔲 Completar migraciones SQL (V2-V5)
 
 ### Siguiente Semana
 
-5. 🔲 Implementar Spring Security + JWT
-6. 🔲 Proteger endpoints
-7. 🔲 Crear tests unitarios básicos
+6. 🔲 Refactorizar Services y Controllers para usar DTOs
+7. 🔲 Implementar Spring Security + JWT
+8. 🔲 Proteger endpoints
+9. 🔲 Crear tests unitarios básicos
 
 ---
 
@@ -503,17 +597,19 @@ private LocalDate fechaTermino;
 
 - ✅ **Bien:** Uso de herencia JOINED para usuarios
 - ✅ **Bien:** Estructura modular clara
+- ✅ **Bien:** DTOs implementados para Practica con validaciones
+- ✅ **Bien:** Excepciones personalizadas con estructura robusta
 - ⚠️ **Desviación:** JefeDirecto como entidad separada (no previsto en docs)
 - ❌ **Crítico:** Security deshabilitado en producción
-- ❌ **Crítico:** Sin DTOs (exposición de entidades)
+- 🟨 **En progreso:** Migración de controllers a usar DTOs
 
 ### Conformidad con Documentación
 
-| Documento                      | Conformidad | Notas                         |
-| ------------------------------ | ----------- | ----------------------------- |
-| INVESTIGACION-PLANIFICACION.MD | 🟨 60%      | Modelo de datos difiere       |
-| IMPLEMENTACION.MD              | 🟨 40%      | Muchos componentes pendientes |
-| pom.xml                        | ✅ 95%      | Dependencias correctas        |
+| Documento                      | Conformidad | Notas                            |
+| ------------------------------ | ----------- | -------------------------------- |
+| INVESTIGACION-PLANIFICACION.MD | 🟨 60%      | Modelo de datos difiere          |
+| IMPLEMENTACION.MD              | 🟨 50%      | DTOs y excepciones implementadas |
+| pom.xml                        | ✅ 95%      | Dependencias correctas           |
 
 ---
 
@@ -525,5 +621,6 @@ private LocalDate fechaTermino;
 
 ---
 
-**Generado el:** 9 de diciembre de 2025  
-**Próxima revisión:** Al completar Fase 1
+**Generado el:** 10 de diciembre de 2025  
+**Última actualización:** 10 de diciembre de 2025  
+**Próxima revisión:** Al completar Sprint 1 (PRs #1-7)
