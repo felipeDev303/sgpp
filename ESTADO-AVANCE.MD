@@ -485,18 +485,18 @@ private LocalDate fechaTermino;
 
 ### Sprint 1: DTOs y Manejo de Errores ⚡ Prioridad Alta
 
-- [x] **PR #1:** DTO base structure (ErrorResponseDTO)
-- [x] **PR #2:** Implementar DTOs de Práctica (Request/Response)
-- [x] **PR #3:** Excepciones personalizadas (ResourceNotFound, Business, Validation)
+- [x] **PR #1:** DTO base structure (ErrorResponseDTO) ✅
+- [x] **PR #2:** Implementar DTOs de Práctica (Request/Response) ✅
+- [x] **PR #3:** Excepciones personalizadas (ResourceNotFound, Business, Validation) ✅
 - [x] **PR #4:** GlobalExceptionHandler con @RestControllerAdvice ✅
 - [x] **PR #5:** V2\_\_Create_Practica_Table.sql con índices y constraints ✅
-- [x] **PR #6:** DTOs de Estudiante (Request/Response) → `feature/estudiante-dtos`
-- [x] **PR #7:** DTOs de Profesor (Request/Response) → `feature/profesor-dtos`
-- [ ] **PR #8:** DTOs de Empresa y JefeDirecto → `feature/empresa-jefe-dtos`
+- [x] **PR #6:** DTOs de Estudiante (Request/Response) ✅
+- [x] **PR #7:** DTOs de Profesor (Request/Response) ✅
+- [x] **PR #8:** DTOs de Empresa y JefeDirecto ✅
 
 ### Sprint 2: Refactorización de Servicios y Controladores 🔄
 
-- [ ] **PR #9:** Refactorizar PracticaService para usar DTOs → `feature/refactor-practica-service`
+- [x] **PR #9:** Refactorizar PracticaService para usar DTOs ✅
 - [ ] **PR #10:** Refactorizar PracticaController para usar DTOs y @Valid → `feature/refactor-practica-controller`
 - [ ] **PR #11:** Implementar validaciones de lógica de negocio en PracticaService → `feature/practica-business-validations`
 - [ ] **PR #12:** Agregar validación de fechas y estados en Practica → `feature/practica-date-validations`
@@ -547,12 +547,12 @@ private LocalDate fechaTermino;
 - [ ] **PR #44:** Validación de variables de entorno → `feature/env-validation`
 - [ ] **PR #45:** README.md completo con setup → `feature/readme-documentation`
 
-### Progreso Total: 5/45 PRs completados (11%)
+### Progreso Total: 9/45 PRs completados (20%)
 
-**Último PR completado:** #5 - V2\_\_Create_Practica_Table.sql  
-**Siguiente PR:** #6 - DTOs de Estudiante (Request/Response)  
-**Rama activa:** feature/practica-table-migration  
-**Rama sugerida para siguiente PR:** feature/estudiante-dtos
+**Último PR completado:** #9 - Refactorizar PracticaService para usar DTOs  
+**Siguiente PR:** #10 - Refactorizar PracticaController para usar DTOs y @Valid  
+**Rama activa:** feature/refactor-practica-service  
+**Rama sugerida para siguiente PR:** feature/refactor-practica-controller
 
 ---
 

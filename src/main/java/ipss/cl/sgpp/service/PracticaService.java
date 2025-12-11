@@ -1,86 +1,170 @@
 package ipss.cl.sgpp.service;
 
+import ipss.cl.sgpp.dto.request.PracticaRequestDTO;
+import ipss.cl.sgpp.dto.response.PracticaResponseDTO;
+import ipss.cl.sgpp.exception.BusinessException;
+import ipss.cl.sgpp.exception.ResourceNotFoundException;
 import ipss.cl.sgpp.model.*;
-import ipss.cl.sgpp.repository.PracticaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import ipss.cl.sgpp.repository.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional; // La clave para el Indicador 2.3
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
-@Service // Marca esta clase como un Componente de Servicio de Spring
+@Service
+@RequiredArgsConstructor
 public class PracticaService {
 
-    // Inyección de Dependencias: Spring gestiona las instancias de los Repositorios
-    @Autowired
-    private PracticaRepository practicaRepository;
+    private final PracticaRepository practicaRepository;
+    private final EstudianteRepository estudianteRepository;
+    private final ProfesorRepository profesorRepository;
+    private final EmpresaRepository empresaRepository;
+    private final JefeDirectoRepository jefeDirectoRepository; 
     
-    // También necesitarías inyectar EstudianteRepository, EmpresaRepository, etc. 
-    // si las usaras en este servicio para validar o buscar dependencias antes de guardar.
-    // @Autowired
-    // private EstudianteRepository estudianteRepository; 
-    
-    // =====================================================================
-    // C - CREATE (Crear una Práctica)
-    // =====================================================================
-    // Usamos @Transactional para asegurar que si hay un error al guardar, 
-    // toda la operación se revierta (ROLLBACK). ¡Esto es clave para la consistencia!
     @Transactional
-    public Practica guardarPractica(Practica practica) {
-        // Aquí podrías poner lógica de negocio, como calcular una fecha final, 
-        // o validar que el estudiante exista antes de guardar.
-        return practicaRepository.save(practica);
+    public PracticaResponseDTO guardarPractica(PracticaRequestDTO requestDTO) {
+        // Validar que todas las entidades relacionadas existan
+        Estudiante estudiante = estudianteRepository.findById(requestDTO.getEstudianteId())
+            .orElseThrow(() -> new ResourceNotFoundException("Estudiante", "id", requestDTO.getEstudianteId()));
+        
+        Profesor profesor = profesorRepository.findById(requestDTO.getProfesorId())
+            .orElseThrow(() -> new ResourceNotFoundException("Profesor", "id", requestDTO.getProfesorId()));
+        
+        Empresa empresa = empresaRepository.findById(requestDTO.getEmpresaId())
+            .orElseThrow(() -> new ResourceNotFoundException("Empresa", "id", requestDTO.getEmpresaId()));
+        
+        JefeDirecto jefeDirecto = jefeDirectoRepository.findById(requestDTO.getJefeDirectoId())
+            .orElseThrow(() -> new ResourceNotFoundException("JefeDirecto", "id", requestDTO.getJefeDirectoId()));
+        
+        // Validación de negocio: verificar que el estudiante no tenga prácticas activas superpuestas
+        validarPracticasSuperpuestas(estudiante.getId(), requestDTO.getFechaInicio(), requestDTO.getFechaTermino(), null);
+        
+        // Validación de negocio: fechas
+        if (requestDTO.getFechaTermino().isBefore(requestDTO.getFechaInicio())) {
+            throw new BusinessException("FECHAS_INVALIDAS", "La fecha de término debe ser posterior a la fecha de inicio");
+        }
+        
+        // Crear entidad desde DTO
+        Practica practica = Practica.builder()
+            .estudiante(estudiante)
+            .profesor(profesor)
+            .empresa(empresa)
+            .jefeDirecto(jefeDirecto)
+            .fechaInicio(requestDTO.getFechaInicio())
+            .fechaTermino(requestDTO.getFechaTermino())
+            .descripcionActividades(requestDTO.getDescripcionActividades())
+            .build();
+        
+        Practica practicaGuardada = practicaRepository.save(practica);
+        return PracticaResponseDTO.from(practicaGuardada);
     }
 
-    // =====================================================================
-    // R - READ (Leer Prácticas)
-    // =====================================================================
-    
-    // Para el perfil Profesor (puede ver todas las prácticas)
-    public List<Practica> obtenerTodasLasPracticas() {
-        return practicaRepository.findAll();
+    public List<PracticaResponseDTO> obtenerTodasLasPracticas() {
+        return practicaRepository.findAll().stream()
+            .map(PracticaResponseDTO::from)
+            .collect(Collectors.toList());
     }
     
-    // Para el perfil Estudiante (solo ve las suyas)
-    public List<Practica> obtenerPracticasPorEstudiante(Long estudianteId) {
-        return practicaRepository.findByEstudianteId(estudianteId);
+    public List<PracticaResponseDTO> obtenerPracticasPorEstudiante(Long estudianteId) {
+        // Validar que el estudiante exista
+        if (!estudianteRepository.existsById(estudianteId)) {
+            throw new ResourceNotFoundException("Estudiante", "id", estudianteId);
+        }
+        
+        return practicaRepository.findByEstudianteId(estudianteId).stream()
+            .map(PracticaResponseDTO::from)
+            .collect(Collectors.toList());
     }
     
-    public Optional<Practica> obtenerPracticaPorId(Long id) {
-        return practicaRepository.findById(id);
+    public PracticaResponseDTO obtenerPracticaPorId(Long id) {
+        Practica practica = practicaRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Practica", "id", id));
+        
+        return PracticaResponseDTO.from(practica);
     }
 
-    // =====================================================================
-    // U - UPDATE (Actualizar una Práctica)
-    // =====================================================================
     @Transactional
-    public Practica actualizarPractica(Long id, Practica practicaActualizada) {
-        // 1. Verificar si la práctica existe
-        return practicaRepository.findById(id)
-            .map(practicaExistente -> {
-                // 2. Aplicar los cambios
-                practicaExistente.setFechaInicio(practicaActualizada.getFechaInicio());
-                practicaExistente.setFechaTermino(practicaActualizada.getFechaTermino());
-                practicaExistente.setDescripcionActividades(practicaActualizada.getDescripcionActividades());
-                // Importante: También actualizar las referencias (Estudiante, Profesor, etc.) si es necesario.
-
-                // 3. Guardar y retornar la entidad actualizada
-                return practicaRepository.save(practicaExistente);
-            })
-            // Si no existe, lanza una excepción (buena práctica)
-            .orElseThrow(() -> new RuntimeException("Práctica no encontrada con ID: " + id));
+    public PracticaResponseDTO actualizarPractica(Long id, PracticaRequestDTO requestDTO) {
+        // Verificar que la práctica existe
+        Practica practicaExistente = practicaRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Practica", "id", id));
+        
+        // Validar que todas las entidades relacionadas existan
+        Estudiante estudiante = estudianteRepository.findById(requestDTO.getEstudianteId())
+            .orElseThrow(() -> new ResourceNotFoundException("Estudiante", "id", requestDTO.getEstudianteId()));
+        
+        Profesor profesor = profesorRepository.findById(requestDTO.getProfesorId())
+            .orElseThrow(() -> new ResourceNotFoundException("Profesor", "id", requestDTO.getProfesorId()));
+        
+        Empresa empresa = empresaRepository.findById(requestDTO.getEmpresaId())
+            .orElseThrow(() -> new ResourceNotFoundException("Empresa", "id", requestDTO.getEmpresaId()));
+        
+        JefeDirecto jefeDirecto = jefeDirectoRepository.findById(requestDTO.getJefeDirectoId())
+            .orElseThrow(() -> new ResourceNotFoundException("JefeDirecto", "id", requestDTO.getJefeDirectoId()));
+        
+        // Validación de negocio: verificar que no haya prácticas superpuestas (excluyendo la actual)
+        validarPracticasSuperpuestas(estudiante.getId(), requestDTO.getFechaInicio(), requestDTO.getFechaTermino(), id);
+        
+        // Validación de negocio: fechas
+        if (requestDTO.getFechaTermino().isBefore(requestDTO.getFechaInicio())) {
+            throw new BusinessException("FECHAS_INVALIDAS", "La fecha de término debe ser posterior a la fecha de inicio");
+        }
+        
+        // Actualizar campos
+        practicaExistente.setEstudiante(estudiante);
+        practicaExistente.setProfesor(profesor);
+        practicaExistente.setEmpresa(empresa);
+        practicaExistente.setJefeDirecto(jefeDirecto);
+        practicaExistente.setFechaInicio(requestDTO.getFechaInicio());
+        practicaExistente.setFechaTermino(requestDTO.getFechaTermino());
+        practicaExistente.setDescripcionActividades(requestDTO.getDescripcionActividades());
+        
+        Practica practicaActualizada = practicaRepository.save(practicaExistente);
+        return PracticaResponseDTO.from(practicaActualizada);
     }
 
-    // =====================================================================
-    // D - DELETE (Eliminar una Práctica)
-    // =====================================================================
     @Transactional
     public void eliminarPractica(Long id) {
-        // En un caso real, siempre verifica primero si existe antes de eliminar
         if (!practicaRepository.existsById(id)) {
-            throw new RuntimeException("Práctica no encontrada para eliminar con ID: " + id);
+            throw new ResourceNotFoundException("Practica", "id", id);
         }
         practicaRepository.deleteById(id);
+    }
+    
+    /**
+     * Valida que no existan prácticas superpuestas para el mismo estudiante.
+     * 
+     * @param estudianteId ID del estudiante
+     * @param fechaInicio Fecha de inicio de la práctica
+     * @param fechaTermino Fecha de término de la práctica
+     * @param practicaIdExcluir ID de la práctica a excluir (para actualización), null para creación
+     * @throws BusinessException si hay prácticas superpuestas
+     */
+    private void validarPracticasSuperpuestas(Long estudianteId, 
+                                              java.time.LocalDate fechaInicio, 
+                                              java.time.LocalDate fechaTermino, 
+                                              Long practicaIdExcluir) {
+        List<Practica> practicasEstudiante = practicaRepository.findByEstudianteId(estudianteId);
+        
+        for (Practica practica : practicasEstudiante) {
+            // Excluir la práctica actual si estamos actualizando
+            if (practicaIdExcluir != null && practica.getId().equals(practicaIdExcluir)) {
+                continue;
+            }
+            
+            // Verificar superposición de fechas
+            boolean seSuperpone = !(fechaTermino.isBefore(practica.getFechaInicio()) || 
+                                    fechaInicio.isAfter(practica.getFechaTermino()));
+            
+            if (seSuperpone) {
+                throw new BusinessException(
+                    "PRACTICAS_SUPERPUESTAS", 
+                    String.format("El estudiante ya tiene una práctica en el período %s - %s", 
+                        practica.getFechaInicio(), practica.getFechaTermino())
+                );
+            }
+        }
     }
 }
