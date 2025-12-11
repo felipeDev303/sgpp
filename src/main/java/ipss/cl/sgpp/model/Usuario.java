@@ -1,11 +1,17 @@
 package ipss.cl.sgpp.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED) 
 @Data
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 public abstract class Usuario {
 
     @Id
