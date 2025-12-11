@@ -21,10 +21,10 @@ git # Estado de Avance del Proyecto SGPP
 | **DTOs**                | ✅ Completo  | 100%       | 0%        |
 | **Validaciones**        | ✅ Completo  | 100%       | 0%        |
 | **Manejo de Errores**   | ✅ Completo  | 100%       | 0%        |
-| **Configuración**       | 🟨 Parcial   | 75%        | 25%       |
+| **Configuración**       | 🟨 Parcial   | 80%        | 20%       |
 | **Documentación API**   | ❌ Pendiente | 0%         | 100%      |
 
-**Avance Global:** 🟨 **65%**
+**Avance Global:** 🟨 **68%**
 
 ---
 
@@ -487,7 +487,7 @@ private LocalDate fechaTermino;
 
 - [x] **PR #23:** Simplificar Auditable (remover createdBy/updatedBy) → `feature/simplify-auditable` ✅
 - [x] **PR #24:** Reducir estados de Practica a 3 básicos (PENDIENTE, EN_CURSO, COMPLETADA) → `feature/simplify-estados` ✅
-- [ ] **PR #25:** Convertir servicios auxiliares a solo consultas (eliminar CRUD completo) → `feature/simplify-auxiliary-services`
+- [x] **PR #25:** Convertir servicios auxiliares a solo consultas (eliminar CRUD completo) → `feature/simplify-auxiliary-services` ✅
 
 ### Sprint 4: Documentación API con Swagger 📚
 
@@ -507,12 +507,12 @@ private LocalDate fechaTermino;
 - [ ] **PR #36:** Configurar logging con SLF4J → `feature/logging-config`
 - [ ] **PR #37:** README.md completo con setup → `feature/readme-documentation`
 
-### Progreso Total: 24/37 PRs completados (65%)
+### Progreso Total: 25/37 PRs completados (68%)
 
-**Último PR completado:** #24 - Reducir estados de Practica a 3 básicos  
-**Siguiente PR:** #25 - Convertir servicios auxiliares a solo consultas  
-**Rama activa:** feature/simplify-estados  
-**Rama sugerida para siguiente PR:** feature/simplify-auxiliary-services
+**Último PR completado:** #25 - Convertir servicios auxiliares a solo consultas  
+**Siguiente PR:** #26 - Agregar dependencia springdoc-openapi (Sprint 4: Swagger)  
+**Rama activa:** feature/simplify-auxiliary-services  
+**Rama sugerida para siguiente PR:** feature/swagger-dependency
 
 ---
 
