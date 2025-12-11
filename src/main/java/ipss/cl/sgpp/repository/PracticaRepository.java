@@ -11,8 +11,6 @@ import ipss.cl.sgpp.model.Practica;
 
 public interface PracticaRepository extends JpaRepository<Practica, Long> {
     
-    // ========== Métodos con Soft Delete (excluyen eliminadas) ==========
-    
     /**
      * Busca una práctica activa (no eliminada) por su ID.
      * 
@@ -48,19 +46,6 @@ public interface PracticaRepository extends JpaRepository<Practica, Long> {
      */
     @Query("SELECT p FROM Practica p WHERE p.profesor.id = :profesorId AND p.deleted = false")
     List<Practica> findByProfesorIdAndNotDeleted(@Param("profesorId") Long profesorId);
-    
-    // ========== Métodos legacy (mantener compatibilidad) ==========
-    
-    /**
-     * Busca todas las prácticas de un estudiante (incluye eliminadas).
-     * Método legacy - se recomienda usar findByEstudianteIdAndNotDeleted.
-     * 
-     * @param estudianteId ID del estudiante
-     * @return Lista de todas las prácticas del estudiante
-     */
-    List<Practica> findByEstudianteId(Long estudianteId);
-    
-    // ========== Métodos de auditoría ==========
     
     /**
      * Cuenta las prácticas eliminadas de un estudiante.

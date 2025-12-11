@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import ipss.cl.sgpp.dto.request.EmpresaRequestDTO;
 import ipss.cl.sgpp.dto.response.EmpresaResponseDTO;
-import ipss.cl.sgpp.dto.response.ErrorResponseDTO;
+import ipss.cl.sgpp.dto.common.ErrorResponseDTO;
 import ipss.cl.sgpp.service.EmpresaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -64,9 +64,7 @@ public class EmpresaController {
     @PostMapping
     public ResponseEntity<EmpresaResponseDTO> crearEmpresa(
             @Valid @RequestBody EmpresaRequestDTO requestDTO) {
-        
-        EmpresaResponseDTO responseDTO = empresaService.crearEmpresa(requestDTO);
-        return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+        throw new UnsupportedOperationException("Endpoint deshabilitado en PR #25. Use solo endpoints GET para consultas.");
     }
     
     /**
@@ -200,9 +198,7 @@ public class EmpresaController {
     public ResponseEntity<EmpresaResponseDTO> actualizarEmpresa(
             @PathVariable Long id,
             @Valid @RequestBody EmpresaRequestDTO requestDTO) {
-        
-        EmpresaResponseDTO responseDTO = empresaService.actualizarEmpresa(id, requestDTO);
-        return ResponseEntity.ok(responseDTO);
+        throw new UnsupportedOperationException("Endpoint deshabilitado en PR #25. Use solo endpoints GET para consultas.");
     }
     
     /**
@@ -227,7 +223,6 @@ public class EmpresaController {
     @Deprecated
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarEmpresa(@PathVariable Long id) {
-        empresaService.eliminarEmpresa(id);
-        return ResponseEntity.noContent().build();
+        throw new UnsupportedOperationException("Endpoint deshabilitado en PR #25. Use solo endpoints GET para consultas.");
     }
 }

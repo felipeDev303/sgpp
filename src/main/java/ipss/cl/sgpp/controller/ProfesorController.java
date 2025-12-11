@@ -58,9 +58,7 @@ public class ProfesorController {
     @PostMapping
     public ResponseEntity<ProfesorResponseDTO> crearProfesor(
             @Valid @RequestBody ProfesorRequestDTO requestDTO) {
-        
-        ProfesorResponseDTO responseDTO = profesorService.crearProfesor(requestDTO);
-        return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+        throw new UnsupportedOperationException("Endpoint deshabilitado en PR #25. Use solo endpoints GET para consultas.");
     }
     
     /**
@@ -196,9 +194,7 @@ public class ProfesorController {
             @Parameter(description = "ID del profesor", required = true, example = "1")
             @PathVariable Long id,
             @Valid @RequestBody ProfesorRequestDTO requestDTO) {
-        
-        ProfesorResponseDTO responseDTO = profesorService.actualizarProfesor(id, requestDTO);
-        return ResponseEntity.ok(responseDTO);
+        throw new UnsupportedOperationException("Endpoint deshabilitado en PR #25. Use solo endpoints GET para consultas.");
     }
     
     /**
@@ -224,7 +220,6 @@ public class ProfesorController {
     public ResponseEntity<Void> eliminarProfesor(
             @Parameter(description = "ID del profesor", required = true, example = "1")
             @PathVariable Long id) {
-        profesorService.eliminarProfesor(id);
-        return ResponseEntity.noContent().build();
+        throw new UnsupportedOperationException("Endpoint deshabilitado en PR #25. Use solo endpoints GET para consultas.");
     }
 }

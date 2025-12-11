@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import ipss.cl.sgpp.dto.request.JefeDirectoRequestDTO;
 import ipss.cl.sgpp.dto.response.JefeDirectoResponseDTO;
-import ipss.cl.sgpp.dto.response.ErrorResponseDTO;
+import ipss.cl.sgpp.dto.common.ErrorResponseDTO;
 import ipss.cl.sgpp.service.JefeDirectoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -65,9 +65,7 @@ public class JefeDirectoController {
     @PostMapping
     public ResponseEntity<JefeDirectoResponseDTO> crearJefeDirecto(
             @Valid @RequestBody JefeDirectoRequestDTO requestDTO) {
-        
-        JefeDirectoResponseDTO responseDTO = jefeDirectoService.crearJefeDirecto(requestDTO);
-        return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+        throw new UnsupportedOperationException("Endpoint deshabilitado en PR #25. Use solo endpoints GET para consultas.");
     }
     
     /**
@@ -170,9 +168,7 @@ public class JefeDirectoController {
     public ResponseEntity<JefeDirectoResponseDTO> actualizarJefeDirecto(
             @PathVariable Long id,
             @Valid @RequestBody JefeDirectoRequestDTO requestDTO) {
-        
-        JefeDirectoResponseDTO responseDTO = jefeDirectoService.actualizarJefeDirecto(id, requestDTO);
-        return ResponseEntity.ok(responseDTO);
+        throw new UnsupportedOperationException("Endpoint deshabilitado en PR #25. Use solo endpoints GET para consultas.");
     }
     
     /**
@@ -197,7 +193,6 @@ public class JefeDirectoController {
     @Deprecated
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarJefeDirecto(@PathVariable Long id) {
-        jefeDirectoService.eliminarJefeDirecto(id);
-        return ResponseEntity.noContent().build();
+        throw new UnsupportedOperationException("Endpoint deshabilitado en PR #25. Use solo endpoints GET para consultas.");
     }
 }

@@ -58,9 +58,7 @@ public class EstudianteController {
     @PostMapping
     public ResponseEntity<EstudianteResponseDTO> crearEstudiante(
             @Valid @RequestBody EstudianteRequestDTO requestDTO) {
-        
-        EstudianteResponseDTO responseDTO = estudianteService.crearEstudiante(requestDTO);
-        return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+        throw new UnsupportedOperationException("Endpoint deshabilitado en PR #25. Use solo endpoints GET para consultas.");
     }
     
     /**
@@ -200,9 +198,7 @@ public class EstudianteController {
             @Parameter(description = "ID del estudiante", required = true, example = "1")
             @PathVariable Long id,
             @Valid @RequestBody EstudianteRequestDTO requestDTO) {
-        
-        EstudianteResponseDTO responseDTO = estudianteService.actualizarEstudiante(id, requestDTO);
-        return ResponseEntity.ok(responseDTO);
+        throw new UnsupportedOperationException("Endpoint deshabilitado en PR #25. Use solo endpoints GET para consultas.");
     }
     
     /**
@@ -228,7 +224,6 @@ public class EstudianteController {
     public ResponseEntity<Void> eliminarEstudiante(
             @Parameter(description = "ID del estudiante", required = true, example = "1")
             @PathVariable Long id) {
-        estudianteService.eliminarEstudiante(id);
-        return ResponseEntity.noContent().build();
+        throw new UnsupportedOperationException("Endpoint deshabilitado en PR #25. Use solo endpoints GET para consultas.");
     }
 }
