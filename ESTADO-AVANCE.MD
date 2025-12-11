@@ -5,7 +5,7 @@ git # Estado de Avance del Proyecto SGPP
 **Fecha de Análisis:** 10 de diciembre de 2025  
 **Versión:** 0.0.1-SNAPSHOT  
 **Stack:** Spring Boot 3.5.8, Java 21, PostgreSQL  
-**Rama Actual:** feature/custom-exceptions
+**Rama Actual:** feature/practica-table-migration
 
 ---
 
@@ -21,12 +21,12 @@ git # Estado de Avance del Proyecto SGPP
 | **DTOs**                | 🟨 Parcial   | 35%        | 65%       |
 | **Seguridad**           | ❌ Pendiente | 0%         | 100%      |
 | **Validaciones**        | 🟨 Parcial   | 40%        | 60%       |
-| **Manejo de Errores**   | 🟨 Parcial   | 40%        | 60%       |
+| **Manejo de Errores**   | ✅ Completo  | 100%       | 0%        |
 | **Testing**             | ❌ Pendiente | 10%        | 90%       |
 | **Configuración**       | 🟨 Parcial   | 50%        | 50%       |
 | **Documentación API**   | ❌ Pendiente | 0%         | 100%      |
 
-**Avance Global:** 🟨 **52%**
+**Avance Global:** 🟨 **55%**
 
 ---
 
@@ -146,14 +146,14 @@ src/main/java/ipss/cl/sgpp/
 - ❌ Falta usar DTOs en lugar de entidades
 - ❌ Falta documentación con Swagger
 
-### 7. Migraciones de Base de Datos ✅ 90%
+### 7. Migraciones de Base de Datos ✅ 100%
 
 - ✅ Flyway configurado
 - ✅ V1\_\_Create_User_Tables.sql con tablas básicas
-- ❌ Falta tabla `practicas`
-- ❌ Falta tabla `jefes_directos`
-- ❌ Falta índices de optimización
-- ❌ Falta triggers de auditoría
+- ✅ V2\_\_Create_Practica_Table.sql con tabla practicas y jefes_directos
+- ✅ Índices de optimización (6 índices implementados)
+- ✅ Triggers de auditoría (updated_at automático)
+- ✅ Constraints de integridad y validación de negocio
 
 ### 8. Configuración 🟨 50%
 
@@ -315,14 +315,17 @@ test/
 - ❌ Configurar pool de conexiones HikariCP
 - ❌ Configurar JPA auditing (@CreatedDate, @LastModifiedDate)
 
-### 8. Migraciones Completas ❌ 90%
+### 8. Migraciones Completas 🟨 60%
+
+**Implementado:**
+
+- ✅ `V1__Create_User_Tables.sql` - Usuarios, Estudiantes, Profesores, Empresas
+- ✅ `V2__Create_Practica_Table.sql` - Prácticas, Jefes Directos, Índices, Triggers
 
 **Pendiente:**
 
-- ❌ `V2__Create_Practice_Tables.sql`
-- ❌ `V3__Add_Indexes.sql`
-- ❌ `V4__Add_Constraints.sql`
-- ❌ `V5__Initial_Data.sql`
+- ❌ `V3__Initial_Data.sql` (datos de prueba)
+- ❌ `V4__Add_Audit_Fields.sql` (campos de auditoría en entidades existentes)
 
 ---
 
@@ -485,66 +488,71 @@ private LocalDate fechaTermino;
 - [x] **PR #1:** DTO base structure (ErrorResponseDTO)
 - [x] **PR #2:** Implementar DTOs de Práctica (Request/Response)
 - [x] **PR #3:** Excepciones personalizadas (ResourceNotFound, Business, Validation)
-- [ ] **PR #4:** GlobalExceptionHandler con @RestControllerAdvice
-- [ ] **PR #5:** DTOs de Estudiante (Request/Response)
-- [ ] **PR #6:** DTOs de Profesor (Request/Response)
-- [ ] **PR #7:** DTOs de Empresa y JefeDirecto
+- [x] **PR #4:** GlobalExceptionHandler con @RestControllerAdvice ✅
+- [x] **PR #5:** V2\_\_Create_Practica_Table.sql con índices y constraints ✅
+- [ ] **PR #6:** DTOs de Estudiante (Request/Response) → `feature/estudiante-dtos`
+- [ ] **PR #7:** DTOs de Profesor (Request/Response) → `feature/profesor-dtos`
+- [ ] **PR #8:** DTOs de Empresa y JefeDirecto → `feature/empresa-jefe-dtos`
 
 ### Sprint 2: Refactorización de Servicios y Controladores 🔄
 
-- [ ] **PR #8:** Refactorizar PracticaService para usar DTOs
-- [ ] **PR #9:** Refactorizar PracticaController para usar DTOs
-- [ ] **PR #10:** Implementar validaciones de lógica de negocio en PracticaService
-- [ ] **PR #11:** Agregar validación de fechas y estados en Practica
-- [ ] **PR #12:** Implementar servicios para Estudiante con DTOs
-- [ ] **PR #13:** Implementar servicios para Profesor con DTOs
-- [ ] **PR #14:** Implementar servicios para Empresa con DTOs
+- [ ] **PR #9:** Refactorizar PracticaService para usar DTOs → `feature/refactor-practica-service`
+- [ ] **PR #10:** Refactorizar PracticaController para usar DTOs y @Valid → `feature/refactor-practica-controller`
+- [ ] **PR #11:** Implementar validaciones de lógica de negocio en PracticaService → `feature/practica-business-validations`
+- [ ] **PR #12:** Agregar validación de fechas y estados en Practica → `feature/practica-date-validations`
+- [ ] **PR #13:** Implementar EstudianteService con DTOs → `feature/estudiante-service`
+- [ ] **PR #14:** Implementar ProfesorService con DTOs → `feature/profesor-service`
+- [ ] **PR #15:** Implementar EmpresaService y JefeDirectoService → `feature/empresa-jefe-services`
 
 ### Sprint 3: Migraciones y Base de Datos 🗄️
 
-- [ ] **PR #15:** V2\_\_Create_Practicas_Table.sql
-- [ ] **PR #16:** V3\_\_Add_Indexes.sql (optimización de queries)
-- [ ] **PR #17:** V4\_\_Add_Constraints.sql (foreign keys, checks)
-- [ ] **PR #18:** V5\_\_Initial_Data.sql (datos de prueba)
-- [ ] **PR #19:** Configurar JPA Auditing (@CreatedDate, @LastModifiedDate)
-- [ ] **PR #20:** Agregar campos de auditoría a todas las entidades
+- [x] **PR #5:** V2\_\_Create_Practicas_Table.sql ✅ (completado)
+- [ ] **PR #16:** V3\_\_Initial_Data.sql (datos de prueba) → `feature/initial-data-migration`
+- [ ] **PR #17:** V4\_\_Add_Audit_Fields.sql (auditoría en todas las tablas) → `feature/audit-fields-migration`
+- [ ] **PR #18:** Configurar JPA Auditing (@EnableJpaAuditing) → `feature/jpa-auditing-config`
+- [ ] **PR #19:** Agregar campos de auditoría a entidades JPA → `feature/entity-audit-fields`
+- [ ] **PR #20:** Implementar AuditorAware para tracking de usuarios → `feature/auditor-aware-impl`
 
 ### Sprint 4: Seguridad y Autenticación 🔐 Prioridad Alta
 
-- [ ] **PR #21:** SecurityConfig básico con JWT
-- [ ] **PR #22:** JwtTokenProvider y JwtAuthenticationFilter
-- [ ] **PR #23:** CustomUserDetailsService
-- [ ] **PR #24:** AuthController (login, register)
-- [ ] **PR #25:** DTOs de autenticación (LoginRequest, AuthResponse)
-- [ ] **PR #26:** Proteger endpoints con @PreAuthorize
-- [ ] **PR #27:** UnauthorizedException y manejo en GlobalExceptionHandler
+- [ ] **PR #21:** DTOs de autenticación (LoginRequest, RegisterRequest, AuthResponse) → `feature/auth-dtos`
+- [ ] **PR #22:** JwtTokenProvider (generar y validar tokens) → `feature/jwt-token-provider`
+- [ ] **PR #23:** JwtAuthenticationFilter (interceptar requests) → `feature/jwt-auth-filter`
+- [ ] **PR #24:** CustomUserDetailsService (cargar usuarios) → `feature/custom-user-details`
+- [ ] **PR #25:** SecurityConfig con filtros JWT → `feature/security-config`
+- [ ] **PR #26:** AuthController (login, register) → `feature/auth-controller`
+- [ ] **PR #27:** UnauthorizedException y handler → `feature/unauthorized-exception`
+- [ ] **PR #28:** Proteger endpoints con @PreAuthorize → `feature/endpoint-authorization`
 
 ### Sprint 5: Testing 🧪
 
-- [ ] **PR #28:** Tests unitarios de PracticaService con Mockito
-- [ ] **PR #29:** Tests unitarios de PracticaController con MockMvc
-- [ ] **PR #30:** Tests de integración de PracticaRepository con @DataJpaTest
-- [ ] **PR #31:** Tests de validaciones de DTOs
-- [ ] **PR #32:** Tests de excepciones personalizadas
-- [ ] **PR #33:** Tests de autenticación y autorización
-- [ ] **PR #34:** Tests de endpoints protegidos
+- [ ] **PR #29:** Tests unitarios de PracticaService con Mockito → `feature/test-practica-service`
+- [ ] **PR #30:** Tests unitarios de PracticaController con MockMvc → `feature/test-practica-controller`
+- [ ] **PR #31:** Tests de integración de PracticaRepository → `feature/test-practica-repository`
+- [ ] **PR #32:** Tests de validaciones de DTOs → `feature/test-dto-validations`
+- [ ] **PR #33:** Tests de GlobalExceptionHandler → `feature/test-exception-handler`
+- [ ] **PR #34:** Tests de autenticación JWT → `feature/test-jwt-authentication`
+- [ ] **PR #35:** Tests de autorización y roles → `feature/test-authorization`
+- [ ] **PR #36:** Tests de endpoints protegidos (integration) → `feature/test-secured-endpoints`
 
 ### Sprint 6: Documentación y Configuración 📚
 
-- [ ] **PR #35:** Agregar Swagger/OpenAPI (springdoc-openapi)
-- [ ] **PR #36:** Documentar endpoints con @Operation y @Tag
-- [ ] **PR #37:** Configurar CORS para frontend
-- [ ] **PR #38:** Configurar perfiles (application-dev.properties, application-prod.properties)
-- [ ] **PR #39:** Configurar Actuator endpoints
-- [ ] **PR #40:** Configurar logging con niveles apropiados
-- [ ] **PR #41:** Agregar validación de variables de entorno
-- [ ] **PR #42:** README.md con instrucciones de instalación
+- [ ] **PR #37:** Agregar dependencia springdoc-openapi → `feature/swagger-dependency`
+- [ ] **PR #38:** Documentar endpoints de Practica con @Operation → `feature/swagger-practica-docs`
+- [ ] **PR #39:** Documentar endpoints de Auth con Swagger → `feature/swagger-auth-docs`
+- [ ] **PR #40:** Configurar CORS para frontend → `feature/cors-config`
+- [ ] **PR #41:** Configurar perfiles dev/prod → `feature/application-profiles`
+- [ ] **PR #42:** Configurar Actuator endpoints → `feature/actuator-config`
+- [ ] **PR #43:** Configurar logging con SLF4J → `feature/logging-config`
+- [ ] **PR #44:** Validación de variables de entorno → `feature/env-validation`
+- [ ] **PR #45:** README.md completo con setup → `feature/readme-documentation`
 
-### Progreso Total: 3/42 PRs completados (7%)
+### Progreso Total: 5/45 PRs completados (11%)
 
-**Último PR completado:** #3 - Excepciones personalizadas  
-**Siguiente PR:** #4 - GlobalExceptionHandler  
-**Rama activa:** feature/custom-exceptions
+**Último PR completado:** #5 - V2\_\_Create_Practica_Table.sql  
+**Siguiente PR:** #6 - DTOs de Estudiante (Request/Response)  
+**Rama activa:** feature/practica-table-migration  
+**Rama sugerida para siguiente PR:** feature/estudiante-dtos
 
 ---
 
@@ -559,16 +567,17 @@ private LocalDate fechaTermino;
 | Servicios     | ~80      | ~300      | 27%      |
 | Controladores | ~90      | ~200      | 45%      |
 | DTOs          | ~120     | ~200      | 60%      |
-| Excepciones   | ~100     | ~150      | 67%      |
+| Excepciones   | ~230     | ~250      | 92%      |
+| Migraciones   | ~180     | ~200      | 90%      |
 | Seguridad     | 0        | ~300      | 0%       |
 | Tests         | ~20      | ~500      | 4%       |
-| **Total**     | **~660** | **~2050** | **32%**  |
+| **Total**     | **~970** | **~2350** | **41%**  |
 
 ### Archivos
 
-- **Existentes:** 21 archivos .java
-- **Requeridos:** ~50 archivos .java
-- **Completado:** 42%
+- **Existentes:** 22 archivos .java + 2 archivos .sql
+- **Requeridos:** ~55 archivos totales
+- **Completado:** 44%
 
 ---
 
@@ -579,15 +588,17 @@ private LocalDate fechaTermino;
 1. ✅ **HECHO:** Actualizar documentación de estado
 2. ✅ **HECHO:** Crear estructura de DTOs (Practica + Error)
 3. ✅ **HECHO:** Implementar excepciones personalizadas
-4. 🔲 **EN PROGRESO:** Implementar GlobalExceptionHandler
-5. 🔲 Completar migraciones SQL (V2-V5)
+4. ✅ **HECHO:** Implementar GlobalExceptionHandler completo
+5. ✅ **HECHO:** Migración V2 con tabla practicas e índices
+6. 🔲 **SIGUIENTE:** DTOs de Estudiante (Request/Response)
 
 ### Siguiente Semana
 
-6. 🔲 Refactorizar Services y Controllers para usar DTOs
-7. 🔲 Implementar Spring Security + JWT
-8. 🔲 Proteger endpoints
-9. 🔲 Crear tests unitarios básicos
+7. 🔲 Completar DTOs para todas las entidades (Estudiante, Profesor, Empresa)
+8. 🔲 Refactorizar PracticaService y PracticaController para usar DTOs
+9. 🔲 Implementar validaciones de lógica de negocio
+10. 🔲 Migración V3 con datos iniciales
+11. 🔲 Configurar JPA Auditing
 
 ---
 
@@ -599,17 +610,19 @@ private LocalDate fechaTermino;
 - ✅ **Bien:** Estructura modular clara
 - ✅ **Bien:** DTOs implementados para Practica con validaciones
 - ✅ **Bien:** Excepciones personalizadas con estructura robusta
+- ✅ **Bien:** GlobalExceptionHandler completo con 7 handlers
+- ✅ **Bien:** Migración V2 con constraints, índices y triggers
 - ⚠️ **Desviación:** JefeDirecto como entidad separada (no previsto en docs)
 - ❌ **Crítico:** Security deshabilitado en producción
 - 🟨 **En progreso:** Migración de controllers a usar DTOs
 
 ### Conformidad con Documentación
 
-| Documento                      | Conformidad | Notas                            |
-| ------------------------------ | ----------- | -------------------------------- |
-| INVESTIGACION-PLANIFICACION.MD | 🟨 60%      | Modelo de datos difiere          |
-| IMPLEMENTACION.MD              | 🟨 50%      | DTOs y excepciones implementadas |
-| pom.xml                        | ✅ 95%      | Dependencias correctas           |
+| Documento                      | Conformidad | Notas                                          |
+| ------------------------------ | ----------- | ---------------------------------------------- |
+| INVESTIGACION-PLANIFICACION.MD | 🟨 65%      | Modelo de datos difiere, migraciones completas |
+| IMPLEMENTACION.MD              | 🟨 60%      | DTOs, excepciones y handler implementados      |
+| pom.xml                        | ✅ 95%      | Dependencias correctas                         |
 
 ---
 
