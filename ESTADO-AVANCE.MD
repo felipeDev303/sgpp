@@ -509,7 +509,7 @@ private LocalDate fechaTermino;
 - [x] **PR #5:** V2\_\_Create_Practicas_Table.sql ✅ (completado)
 - [x] **PR #16:** V4\_\_Initial_Data.sql (datos de prueba) → `feature/initial-data-migration` ✅
 - [x] **PR #17:** V5\_\_Add_Audit_Fields.sql (auditoría en todas las tablas) → `feature/audit-fields-migration` ✅
-- [ ] **PR #18:** Configurar JPA Auditing (@EnableJpaAuditing) → `feature/jpa-auditing-config`
+- [x] **PR #18:** Configurar JPA Auditing (@EnableJpaAuditing) → `feature/jpa-auditing-config` ✅
 - [ ] **PR #19:** Agregar campos de auditoría a entidades JPA → `feature/entity-audit-fields`
 - [ ] **PR #20:** Implementar AuditorAware para tracking de usuarios → `feature/auditor-aware-impl`
 
@@ -547,12 +547,12 @@ private LocalDate fechaTermino;
 - [ ] **PR #44:** Validación de variables de entorno → `feature/env-validation`
 - [ ] **PR #45:** README.md completo con setup → `feature/readme-documentation`
 
-### Progreso Total: 17/45 PRs completados (38%)
+### Progreso Total: 18/45 PRs completados (40%)
 
-**Último PR completado:** #17 - V5\_\_Add_Audit_Fields.sql (auditoría en todas las tablas)  
-**Siguiente PR:** #18 - Configurar JPA Auditing (@EnableJpaAuditing)  
-**Rama activa:** feature/audit-fields-migration  
-**Rama sugerida para siguiente PR:** feature/jpa-auditing-config
+**Último PR completado:** #18 - Configurar JPA Auditing (@EnableJpaAuditing)  
+**Siguiente PR:** #19 - Agregar campos de auditoría a entidades JPA  
+**Rama activa:** feature/jpa-auditing-config  
+**Rama sugerida para siguiente PR:** feature/entity-audit-fields
 
 ---
 
