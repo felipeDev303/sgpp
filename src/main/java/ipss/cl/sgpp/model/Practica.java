@@ -8,11 +8,13 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,7 +23,7 @@ import java.time.LocalDate;
     fechaTermino = "fechaTermino",
     message = "La fecha de término debe ser posterior a la fecha de inicio"
 )
-public class Practica {
+public class Practica extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

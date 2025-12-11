@@ -14,6 +14,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -21,10 +22,11 @@ import java.util.List;
 @Entity
 @Table(name = "empresas")
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Empresa {
+public class Empresa extends Auditable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
