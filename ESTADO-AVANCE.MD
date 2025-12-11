@@ -286,16 +286,26 @@ Se realizará testing manual usando Swagger UI y herramientas como Postman.
 - ❌ Agregar ejemplos y schemas
 - ❌ Configurar seguridad en Swagger
 
-### 7. Configuración Avanzada ❌ 50%
+### 7. Configuración Avanzada 🟨 80%
+
+**Implementado:**
+
+- ✅ Configuración de base de datos PostgreSQL
+- ✅ Flyway habilitado
+- ✅ JPA configurado
+- ✅ Security deshabilitado (decisión de diseño)
+- ✅ JPA Auditing (@CreatedDate, @LastModifiedDate)
+
+**Omitido (No aplica para proyecto académico):**
+
+- ⚪ CORS para frontend (no hay frontend)
+- ⚪ Perfiles dev/prod (opcional para testing manual)
+- ⚪ Logging avanzado con SLF4J (logging por defecto suficiente)
 
 **Pendiente:**
 
-- ❌ Configurar CORS para frontend
-- ❌ Configurar perfiles (dev, prod)
 - ❌ Configurar Actuator endpoints
-- ❌ Configurar logging con niveles apropiados
-- ❌ Configurar pool de conexiones HikariCP
-- ❌ Configurar JPA auditing (@CreatedDate, @LastModifiedDate)
+- ❌ README.md con documentación de setup
 
 ### 8. Migraciones Completas 🟨 60%
 
@@ -502,12 +512,16 @@ private LocalDate fechaTermino;
 
 ### Sprint 5: Configuración y Refinamiento 🔧
 
-- [ ] **PR #34:** Configurar CORS para frontend → `feature/cors-config`
-- [ ] **PR #35:** Configurar perfiles dev/prod → `feature/application-profiles`
-- [ ] **PR #36:** Configurar logging con SLF4J → `feature/logging-config`
+- [x] **PR #34:** ~~Configurar CORS para frontend~~ → ⚠️ **OMITIDO** (No se trabajará con frontend) ⚪
+- [x] **PR #35:** ~~Configurar perfiles dev/prod~~ → ⚠️ **OMITIDO** (Opcional para proyecto académico) ⚪
+- [x] **PR #36:** ~~Configurar logging con SLF4J~~ → ⚠️ **OMITIDO** (Logging por defecto es suficiente) ⚪
 - [ ] **PR #37:** README.md completo con setup → `feature/readme-documentation`
 
-### Progreso Total: 25/37 PRs completados (68%)
+### Progreso Total: 28/37 PRs (76%)
+
+- ✅ Completados: 25 PRs
+- ⚪ Omitidos: 3 PRs (#34, #35, #36)
+- ❌ Pendientes: 9 PRs (Sprint 4 + README)
 
 **Último PR completado:** #25 - Convertir servicios auxiliares a solo consultas  
 **Siguiente PR:** #26 - Agregar dependencia springdoc-openapi (Sprint 4: Swagger)  
@@ -564,14 +578,15 @@ private LocalDate fechaTermino;
 8. 🔲 PR #24: Reducir estados de práctica (6→3 estados básicos)
 9. 🔲 PR #25: Simplificar servicios auxiliares (CRUD→Solo consultas)
 
-### Siguiente Semana
+### Siguiente Semana (Sprint 4: Swagger - Prioridad Alta)
 
-10. 🔲 Agregar dependencia springdoc-openapi
-11. 🔲 Configurar Swagger UI
-12. 🔲 Documentar todos los endpoints con @Operation
-13. 🔲 Agregar ejemplos a DTOs
-14. 🔲 Configurar CORS y perfiles
-15. 🔲 Documentación completa en README.md
+10. 🔲 **PR #26:** Agregar dependencia springdoc-openapi
+11. 🔲 **PR #27:** Configurar Swagger UI y OpenAPI
+12. 🔲 **PR #28-32:** Documentar todos los endpoints con @Operation
+13. 🔲 **PR #33:** Agregar ejemplos y schemas a DTOs
+14. 🔲 **PR #37:** README.md completo con setup y guía de uso
+
+**Nota:** PRs #34, #35 y #36 omitidos (no aplican para proyecto académico sin frontend)
 
 ---
 
