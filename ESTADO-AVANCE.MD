@@ -502,7 +502,7 @@ private LocalDate fechaTermino;
 - [x] **PR #12:** Agregar validación de fechas y estados en Practica ✅
 - [x] **PR #13:** Implementar EstudianteService con DTOs → `feature/estudiante-service` ✅
 - [x] **PR #14:** Implementar ProfesorService con DTOs → `feature/profesor-service` ✅
-- [ ] **PR #15:** Implementar EmpresaService y JefeDirectoService → `feature/empresa-jefe-services`
+- [x] **PR #15:** Implementar EmpresaService y JefeDirectoService → `feature/empresa-jefe-services` ✅
 
 ### Sprint 3: Migraciones y Base de Datos 🗄️
 
@@ -547,12 +547,12 @@ private LocalDate fechaTermino;
 - [ ] **PR #44:** Validación de variables de entorno → `feature/env-validation`
 - [ ] **PR #45:** README.md completo con setup → `feature/readme-documentation`
 
-### Progreso Total: 14/45 PRs completados (31%)
+### Progreso Total: 15/45 PRs completados (33%)
 
-**Último PR completado:** #14 - Implementar ProfesorService con DTOs  
-**Siguiente PR:** #15 - Implementar EmpresaService y JefeDirectoService  
-**Rama activa:** feature/profesor-service  
-**Rama sugerida para siguiente PR:** feature/empresa-jefe-services
+**Último PR completado:** #15 - Implementar EmpresaService y JefeDirectoService  
+**Siguiente PR:** #16 - V3\_\_Initial_Data.sql (datos de prueba)  
+**Rama activa:** feature/empresa-jefe-services  
+**Rama sugerida para siguiente PR:** feature/initial-data-migration
 
 ---
 
