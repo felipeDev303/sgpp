@@ -1,5 +1,6 @@
 package ipss.cl.sgpp.dto.request;
 
+import ipss.cl.sgpp.model.EstadoPractica;
 import lombok.Data;
 import jakarta.validation.constraints.*;
 
@@ -13,7 +14,7 @@ public class PracticaRequestDTO {
     private Long estudianteId;
 
     @Positive(message = "El ID del profesor debe ser un número positivo")
-    private Long profesorSupervisorId; // Opcional
+    private Long profesorId; // Opcional
 
     @NotNull(message = "El ID de la empresa es obligatorio")
     @Positive(message = "El ID de la empresa debe ser un número positivo")
@@ -34,6 +35,11 @@ public class PracticaRequestDTO {
     @NotBlank(message = "La descripción de actividades es obligatoria")
     @Size(max = 1000, message = "La descripción no puede superar los 1000 caracteres")
     private String descripcionActividades;
+    
+    /**
+     * Estado de la práctica. Si no se proporciona, se asigna PENDIENTE por defecto.
+     */
+    private EstadoPractica estado;
 
     /**
      * Validación personalizada para asegurar que fechaTermino > fechaInicio

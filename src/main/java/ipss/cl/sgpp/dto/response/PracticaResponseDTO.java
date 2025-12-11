@@ -1,5 +1,6 @@
 package ipss.cl.sgpp.dto.response;
 
+import ipss.cl.sgpp.model.EstadoPractica;
 import ipss.cl.sgpp.model.Practica;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +19,8 @@ public class PracticaResponseDTO {
     private LocalDate fechaInicio;
     private LocalDate fechaTermino;
     private String descripcionActividades;
+    private EstadoPractica estado;
+    private String estadoDescripcion;
     
     // Datos del estudiante
     private Long estudianteId;
@@ -25,9 +28,9 @@ public class PracticaResponseDTO {
     private String estudianteRut;
     private String estudianteCarrera;
     
-    // Datos del profesor supervisor (puede ser null)
-    private Long profesorSupervisorId;
-    private String profesorSupervisorNombre;
+    // Datos del profesor (puede ser null)
+    private Long profesorId;
+    private String profesorNombre;
     private String profesorDepartamento;
     
     // Datos de la empresa
@@ -54,7 +57,9 @@ public class PracticaResponseDTO {
             .id(practica.getId())
             .fechaInicio(practica.getFechaInicio())
             .fechaTermino(practica.getFechaTermino())
-            .descripcionActividades(practica.getDescripcionActividades());
+            .descripcionActividades(practica.getDescripcionActividades())
+            .estado(practica.getEstado())
+            .estadoDescripcion(practica.getEstado() != null ? practica.getEstado().getDescripcion() : null);
         
         // Datos del estudiante
         if (practica.getEstudiante() != null) {
@@ -64,11 +69,11 @@ public class PracticaResponseDTO {
                    .estudianteCarrera(practica.getEstudiante().getCarrera());
         }
         
-        // Datos del profesor supervisor (opcional)
-        if (practica.getProfesorSupervisor() != null) {
-            builder.profesorSupervisorId(practica.getProfesorSupervisor().getId())
-                   .profesorSupervisorNombre(practica.getProfesorSupervisor().getNombreCompleto())
-                   .profesorDepartamento(practica.getProfesorSupervisor().getDepartamento());
+        // Datos del profesor (opcional)
+        if (practica.getProfesor() != null) {
+            builder.profesorId(practica.getProfesor().getId())
+                   .profesorNombre(practica.getProfesor().getNombreCompleto())
+                   .profesorDepartamento(practica.getProfesor().getDepartamento());
         }
         
         // Datos de la empresa
@@ -81,7 +86,7 @@ public class PracticaResponseDTO {
         // Datos del jefe directo
         if (practica.getJefeDirecto() != null) {
             builder.jefeDirectoId(practica.getJefeDirecto().getId())
-                   .jefeDirectoNombre(practica.getJefeDirecto().getNombreCompleto());
+                   .jefeDirectoNombre(practica.getJefeDirecto().getNombre());
         }
         
         return builder.build();
