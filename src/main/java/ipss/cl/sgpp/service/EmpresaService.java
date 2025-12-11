@@ -1,52 +1,36 @@
 package ipss.cl.sgpp.service;
 
-import ipss.cl.sgpp.dto.request.EmpresaRequestDTO;
 import ipss.cl.sgpp.dto.response.EmpresaResponseDTO;
-import ipss.cl.sgpp.exception.BusinessException;
 import ipss.cl.sgpp.exception.ResourceNotFoundException;
 import ipss.cl.sgpp.model.Empresa;
 import ipss.cl.sgpp.repository.EmpresaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Servicio para gestión de empresas.
- * Implementa operaciones CRUD con DTOs y validaciones de negocio.
+ * Servicio de consulta para empresas.
+ * 
+ * Simplificado a operaciones de solo lectura (GET).
+ * La problemática se enfoca en gestión de prácticas, no en CRUD completo de empresas.
+ * Las empresas se gestionan externamente (convenios, relaciones institucionales, etc.).
+ * 
+ * Operaciones disponibles:
+ * - Listar todas las empresas
+ * - Buscar por ID
+ * - Buscar por RUT
+ * - Buscar por nombre
+ * 
+ * @author SGPP Team
+ * @since 1.0
  */
 @Service
 @RequiredArgsConstructor
 public class EmpresaService {
 
     private final EmpresaRepository empresaRepository;
-    
-    /**
-     * Crea una nueva empresa.
-     * 
-     * @param requestDTO Datos de la empresa a crear
-     * @return DTO con los datos de la empresa creada
-     * @throws BusinessException si hay errores de validación de negocio
-     */
-    @Transactional
-    public EmpresaResponseDTO crearEmpresa(EmpresaRequestDTO requestDTO) {
-        // Validaciones de negocio
-        validarRutUnico(requestDTO.getRut(), null);
-        validarNombreUnico(requestDTO.getNombre(), null);
-        
-        // Crear entidad desde DTO
-        Empresa empresa = Empresa.builder()
-            .nombre(requestDTO.getNombre())
-            .rut(requestDTO.getRut())
-            .direccion(requestDTO.getDireccion())
-            .contactoEmail(requestDTO.getContactoEmail())
-            .build();
-        
-        Empresa empresaGuardada = empresaRepository.save(empresa);
-        return EmpresaResponseDTO.from(empresaGuardada);
-    }
     
     /**
      * Obtiene todas las empresas registradas.
@@ -106,9 +90,7 @@ public class EmpresaService {
         
         return EmpresaResponseDTO.from(empresa);
     }
-    
-    /**
-     * Actualiza los datos de una empresa existente.
+}
      * 
      * @param id ID de la empresa a actualizar
      * @param requestDTO Nuevos datos de la empresa

@@ -12,8 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Controlador REST para la gestión de profesores.
- * Expone endpoints para operaciones CRUD.
+ * Controlador REST para consultas de profesores.
+ * 
+ * NOTA: Los endpoints POST, PUT, DELETE ya NO están soportados en ProfesorService
+ * (simplificado a solo consultas). La gestión de profesores se realiza externamente.
+ * Solo endpoints GET están funcionales.
+ * 
+ * @deprecated Los métodos CRUD (crear, actualizar, eliminar) fueron removidos en PR #25
  */
 @RestController
 @RequestMapping("/api/v1/profesores")

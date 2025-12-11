@@ -1,56 +1,36 @@
 package ipss.cl.sgpp.service;
 
-import ipss.cl.sgpp.dto.request.ProfesorRequestDTO;
 import ipss.cl.sgpp.dto.response.ProfesorResponseDTO;
-import ipss.cl.sgpp.exception.BusinessException;
 import ipss.cl.sgpp.exception.ResourceNotFoundException;
 import ipss.cl.sgpp.model.Profesor;
-import ipss.cl.sgpp.model.Rol;
 import ipss.cl.sgpp.repository.ProfesorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Servicio para gestión de profesores.
- * Implementa operaciones CRUD con DTOs y validaciones de negocio.
+ * Servicio de consulta para profesores.
+ * 
+ * Simplificado a operaciones de solo lectura (GET).
+ * La problemática se enfoca en gestión de prácticas, no en CRUD completo de usuarios.
+ * Los profesores se gestionan externamente (sistema de recursos humanos, nómina, etc.).
+ * 
+ * Operaciones disponibles:
+ * - Listar todos los profesores
+ * - Buscar por ID
+ * - Buscar por email
+ * - Buscar por departamento
+ * 
+ * @author SGPP Team
+ * @since 1.0
  */
 @Service
 @RequiredArgsConstructor
 public class ProfesorService {
 
     private final ProfesorRepository profesorRepository;
-    
-    /**
-     * Crea un nuevo profesor.
-     * 
-     * @param requestDTO Datos del profesor a crear
-     * @return DTO con los datos del profesor creado
-     * @throws BusinessException si hay errores de validación de negocio
-     */
-    @Transactional
-    public ProfesorResponseDTO crearProfesor(ProfesorRequestDTO requestDTO) {
-        // Validaciones de negocio
-        validarEmailUnico(requestDTO.getEmail(), null);
-        validarPassword(requestDTO.getPassword());
-        validarDepartamento(requestDTO.getDepartamento());
-        
-        // Crear entidad desde DTO
-        Profesor profesor = Profesor.builder()
-            .nombreCompleto(requestDTO.getNombreCompleto())
-            .email(requestDTO.getEmail())
-            .password(requestDTO.getPassword()) // En producción: encriptar con BCrypt
-            .rol(Rol.PROFESOR)
-            .departamento(requestDTO.getDepartamento())
-            .especialidad(requestDTO.getEspecialidad())
-            .build();
-        
-        Profesor profesorGuardado = profesorRepository.save(profesor);
-        return ProfesorResponseDTO.from(profesorGuardado);
-    }
     
     /**
      * Obtiene todos los profesores registrados.
@@ -106,18 +86,7 @@ public class ProfesorService {
             .map(ProfesorResponseDTO::from)
             .collect(Collectors.toList());
     }
-    
-    /**
-     * Actualiza los datos de un profesor existente.
-     * 
-     * @param id ID del profesor a actualizar
-     * @param requestDTO Nuevos datos del profesor
-     * @return DTO con los datos actualizados
-     * @throws ResourceNotFoundException si el profesor no existe
-     * @throws BusinessException si hay errores de validación
-     */
-    @Transactional
-    public ProfesorResponseDTO actualizarProfesor(Long id, ProfesorRequestDTO requestDTO) {
+}
         // Verificar que el profesor existe
         Profesor profesorExistente = profesorRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Profesor", "id", id));
