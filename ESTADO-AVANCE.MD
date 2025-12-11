@@ -505,7 +505,7 @@ private LocalDate fechaTermino;
 - [x] **PR #27:** Configurar Swagger UI y OpenAPI → `feature/swagger-config` ✅
 - [x] **PR #28:** Documentar endpoints de Practica con @Operation → `feature/swagger-practica-docs` ✅
 - [x] **PR #29:** Documentar endpoints de Estudiante con Swagger → `feature/swagger-estudiante-docs` ✅
-- [ ] **PR #30:** Documentar endpoints de Profesor con Swagger → `feature/swagger-profesor-docs`
+- [x] **PR #30:** Documentar endpoints de Profesor con Swagger → `feature/swagger-profesor-docs` ✅
 - [ ] **PR #31:** Documentar endpoints de Empresa con Swagger → `feature/swagger-empresa-docs`
 - [ ] **PR #32:** Documentar endpoints de JefeDirecto con Swagger → `feature/swagger-jefedirecto-docs`
 - [ ] **PR #33:** Agregar ejemplos y schemas a DTOs → `feature/swagger-dto-examples`
@@ -517,16 +517,16 @@ private LocalDate fechaTermino;
 - [x] **PR #36:** ~~Configurar logging con SLF4J~~ → ⚠️ **OMITIDO** (Logging por defecto es suficiente) ⚪
 - [ ] **PR #37:** README.md completo con setup → `feature/readme-documentation`
 
-### Progreso Total: 32/37 PRs (86%)
+### Progreso Total: 33/37 PRs (89%)
 
-- ✅ Completados: 29 PRs
+- ✅ Completados: 30 PRs
 - ⚪ Omitidos: 3 PRs (#34, #35, #36)
-- ❌ Pendientes: 5 PRs (Sprint 4 + README)
+- ❌ Pendientes: 4 PRs (Sprint 4 + README)
 
-**Último PR completado:** #29 - Documentar endpoints de Estudiante con Swagger  
-**Siguiente PR:** #30 - Documentar endpoints de Profesor con Swagger  
-**Rama activa:** feature/swagger-estudiante-docs  
-**Rama sugerida para siguiente PR:** feature/swagger-profesor-docs
+**Último PR completado:** #30 - Documentar endpoints de Profesor con Swagger  
+**Siguiente PR:** #31 - Documentar endpoints de Empresa con Swagger  
+**Rama activa:** feature/swagger-profesor-docs  
+**Rama sugerida para siguiente PR:** feature/swagger-empresa-docs
 
 ---
 
