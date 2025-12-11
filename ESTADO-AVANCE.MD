@@ -490,8 +490,8 @@ private LocalDate fechaTermino;
 - [x] **PR #3:** Excepciones personalizadas (ResourceNotFound, Business, Validation)
 - [x] **PR #4:** GlobalExceptionHandler con @RestControllerAdvice ✅
 - [x] **PR #5:** V2\_\_Create_Practica_Table.sql con índices y constraints ✅
-- [ ] **PR #6:** DTOs de Estudiante (Request/Response) → `feature/estudiante-dtos`
-- [ ] **PR #7:** DTOs de Profesor (Request/Response) → `feature/profesor-dtos`
+- [x] **PR #6:** DTOs de Estudiante (Request/Response) → `feature/estudiante-dtos`
+- [x] **PR #7:** DTOs de Profesor (Request/Response) → `feature/profesor-dtos`
 - [ ] **PR #8:** DTOs de Empresa y JefeDirecto → `feature/empresa-jefe-dtos`
 
 ### Sprint 2: Refactorización de Servicios y Controladores 🔄
