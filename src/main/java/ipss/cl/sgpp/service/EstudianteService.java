@@ -82,7 +82,9 @@ public class EstudianteService {
      * @throws ResourceNotFoundException si el estudiante no existe
      */
     public EstudianteResponseDTO obtenerEstudiantePorRut(String rut) {
-        Estudiante estudiante = estudianteRepository.findByRut(rut);
+        // TODO: Implementar método findByRut en estudianteRepository
+        // Estudiante estudiante = estudianteRepository.findByRut(rut);
+        Estudiante estudiante = null; // Temporal hasta implementar findByRut
         
         if (estudiante == null) {
             throw new ResourceNotFoundException("Estudiante", "rut", rut);

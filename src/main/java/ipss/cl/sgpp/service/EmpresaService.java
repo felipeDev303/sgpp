@@ -12,19 +12,7 @@ import java.util.stream.Collectors;
 
 /**
  * Servicio de consulta para empresas.
- * 
- * Simplificado a operaciones de solo lectura (GET).
- * La problemática se enfoca en gestión de prácticas, no en CRUD completo de empresas.
- * Las empresas se gestionan externamente (convenios, relaciones institucionales, etc.).
- * 
- * Operaciones disponibles:
- * - Listar todas las empresas
- * - Buscar por ID
- * - Buscar por RUT
- * - Buscar por nombre
- * 
- * @author SGPP Team
- * @since 1.0
+ * Operaciones de solo lectura para uso en prácticas profesionales.
  */
 @Service
 @RequiredArgsConstructor
@@ -89,99 +77,5 @@ public class EmpresaService {
         }
         
         return EmpresaResponseDTO.from(empresa);
-    }
-}
-     * 
-     * @param id ID de la empresa a actualizar
-     * @param requestDTO Nuevos datos de la empresa
-     * @return DTO con los datos actualizados
-     * @throws ResourceNotFoundException si la empresa no existe
-     * @throws BusinessException si hay errores de validación
-     */
-    @Transactional
-    public EmpresaResponseDTO actualizarEmpresa(Long id, EmpresaRequestDTO requestDTO) {
-        // Verificar que la empresa existe
-        Empresa empresaExistente = empresaRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Empresa", "id", id));
-        
-        // Validaciones de negocio
-        validarRutUnico(requestDTO.getRut(), id);
-        validarNombreUnico(requestDTO.getNombre(), id);
-        
-        // Actualizar campos
-        empresaExistente.setNombre(requestDTO.getNombre());
-        empresaExistente.setRut(requestDTO.getRut());
-        empresaExistente.setDireccion(requestDTO.getDireccion());
-        empresaExistente.setContactoEmail(requestDTO.getContactoEmail());
-        
-        Empresa empresaActualizada = empresaRepository.save(empresaExistente);
-        return EmpresaResponseDTO.from(empresaActualizada);
-    }
-    
-    /**
-     * Elimina una empresa del sistema.
-     * 
-     * @param id ID de la empresa a eliminar
-     * @throws ResourceNotFoundException si la empresa no existe
-     * @throws BusinessException si la empresa tiene prácticas asociadas
-     */
-    @Transactional
-    public void eliminarEmpresa(Long id) {
-        Empresa empresa = empresaRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Empresa", "id", id));
-        
-        // Validar que no tenga prácticas asociadas
-        if (empresa.getPracticas() != null && !empresa.getPracticas().isEmpty()) {
-            throw new BusinessException(
-                "EMPRESA_CON_PRACTICAS",
-                String.format("No se puede eliminar la empresa con ID %d porque tiene %d práctica(s) asociada(s). " +
-                    "Primero debe reasignar o eliminar las prácticas asociadas.",
-                    id, empresa.getPracticas().size())
-            );
-        }
-        
-        empresaRepository.deleteById(id);
-    }
-    
-    /**
-     * Valida que el RUT sea único en el sistema.
-     * 
-     * @param rut RUT a validar
-     * @param empresaIdExcluir ID de la empresa a excluir (para actualizaciones)
-     * @throws BusinessException si el RUT ya está registrado
-     */
-    private void validarRutUnico(String rut, Long empresaIdExcluir) {
-        Empresa empresaExistente = empresaRepository.findByRut(rut);
-        
-        if (empresaExistente != null) {
-            // Si estamos actualizando, verificar que no sea otra empresa
-            if (empresaIdExcluir == null || !empresaExistente.getId().equals(empresaIdExcluir)) {
-                throw new BusinessException(
-                    "RUT_DUPLICADO",
-                    String.format("El RUT '%s' ya está registrado en el sistema", rut)
-                );
-            }
-        }
-    }
-    
-    /**
-     * Valida que el nombre sea único en el sistema.
-     * 
-     * @param nombre Nombre a validar
-     * @param empresaIdExcluir ID de la empresa a excluir (para actualizaciones)
-     * @throws BusinessException si el nombre ya está registrado
-     */
-    private void validarNombreUnico(String nombre, Long empresaIdExcluir) {
-        Empresa empresaExistente = empresaRepository.findByNombreIgnoreCase(nombre);
-        
-        if (empresaExistente != null) {
-            // Si estamos actualizando, verificar que no sea otra empresa
-            if (empresaIdExcluir == null || !empresaExistente.getId().equals(empresaIdExcluir)) {
-                throw new BusinessException(
-                    "NOMBRE_DUPLICADO",
-                    String.format("El nombre '%s' ya está registrado en el sistema", nombre)
-                );
-            }
-        }
     }
 }
