@@ -1,5 +1,6 @@
 package ipss.cl.sgpp.model;
 
+import ipss.cl.sgpp.validation.FechasCoherentes;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
@@ -15,6 +16,11 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@FechasCoherentes(
+    fechaInicio = "fechaInicio", 
+    fechaTermino = "fechaTermino",
+    message = "La fecha de término debe ser posterior a la fecha de inicio"
+)
 public class Practica {
 
     @Id
@@ -27,11 +33,17 @@ public class Practica {
     private LocalDate fechaInicio; 
 
     @NotNull(message = "La fecha de término es obligatoria")
-    private LocalDate fechaTermino; // Validación de la lógica (inicio antes de término) se hace en el Service/DTO.
+    private LocalDate fechaTermino;
 
     @NotBlank(message = "La descripción de actividades es obligatoria")
     @Column(columnDefinition = "TEXT")
     private String descripcionActividades;
+    
+    @NotNull(message = "El estado de la práctica es obligatorio")
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    @Builder.Default
+    private EstadoPractica estado = EstadoPractica.PENDIENTE;
     
     // Validamos que los objetos relacionados (IDs) no sean nulos
     @NotNull(message = "El estudiante es obligatorio")
@@ -52,4 +64,70 @@ public class Practica {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "jefe_directo_id", nullable = false)
     private JefeDirecto jefeDirecto;
+    
+    /**
+     * Verifica si la práctica puede ser modificada según su estado actual.
+     */
+    public boolean puedeSerModificada() {
+        return estado != null && estado.permiteModificaciones();
+    }
+    
+    /**
+     * Verifica si la práctica está en un estado terminal.
+     */
+    public boolean estaEnEstadoTerminal() {
+        return estado != null && estado.esEstadoTerminal();
+    }
+    
+    /**
+     * Cambia el estado de la práctica validando las transiciones permitidas.
+     * 
+     * @param nuevoEstado El nuevo estado a asignar
+     * @return true si el cambio fue exitoso, false si no está permitido
+     */
+    public boolean cambiarEstado(EstadoPractica nuevoEstado) {
+        if (nuevoEstado == null) {
+            return false;
+        }
+        
+        // No permitir cambios desde estados terminales
+        if (estaEnEstadoTerminal()) {
+            return false;
+        }
+        
+        // Validar transiciones permitidas
+        boolean transicionPermitida = esTransicionValida(this.estado, nuevoEstado);
+        
+        if (transicionPermitida) {
+            this.estado = nuevoEstado;
+        }
+        
+        return transicionPermitida;
+    }
+    
+    /**
+     * Valida si una transición de estado es válida según las reglas de negocio.
+     */
+    private boolean esTransicionValida(EstadoPractica estadoActual, EstadoPractica estadoNuevo) {
+        if (estadoActual == estadoNuevo) {
+            return true; // Permitir mantener el mismo estado
+        }
+        
+        return switch (estadoActual) {
+            case PENDIENTE -> estadoNuevo == EstadoPractica.APROBADA || 
+                             estadoNuevo == EstadoPractica.RECHAZADA;
+                             
+            case APROBADA -> estadoNuevo == EstadoPractica.EN_CURSO || 
+                            estadoNuevo == EstadoPractica.RECHAZADA;
+                            
+            case EN_CURSO -> estadoNuevo == EstadoPractica.COMPLETADA || 
+                            estadoNuevo == EstadoPractica.SUSPENDIDA ||
+                            estadoNuevo == EstadoPractica.RECHAZADA;
+                            
+            case SUSPENDIDA -> estadoNuevo == EstadoPractica.EN_CURSO || 
+                              estadoNuevo == EstadoPractica.RECHAZADA;
+                              
+            default -> false; // Estados terminales no permiten transiciones
+        };
+    }
 }

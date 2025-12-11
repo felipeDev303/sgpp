@@ -44,6 +44,10 @@ public class PracticaService {
         validarPracticasSuperpuestas(estudiante.getId(), requestDTO.getFechaInicio(), requestDTO.getFechaTermino(), null);
         validarDescripcionActividades(requestDTO.getDescripcionActividades());
         
+        // Determinar estado inicial (por defecto PENDIENTE si no se especifica)
+        EstadoPractica estadoInicial = requestDTO.getEstado() != null ? 
+            requestDTO.getEstado() : EstadoPractica.PENDIENTE;
+        
         // Crear entidad desde DTO
         Practica practica = Practica.builder()
             .estudiante(estudiante)
@@ -53,6 +57,7 @@ public class PracticaService {
             .fechaInicio(requestDTO.getFechaInicio())
             .fechaTermino(requestDTO.getFechaTermino())
             .descripcionActividades(requestDTO.getDescripcionActividades())
+            .estado(estadoInicial)
             .build();
         
         Practica practicaGuardada = practicaRepository.save(practica);
@@ -108,6 +113,7 @@ public class PracticaService {
         validarPracticasSuperpuestas(estudiante.getId(), requestDTO.getFechaInicio(), requestDTO.getFechaTermino(), id);
         validarDescripcionActividades(requestDTO.getDescripcionActividades());
         validarCambioEstudiante(practicaExistente.getEstudiante().getId(), estudiante.getId());
+        validarPuedeSerModificada(practicaExistente);
         
         // Actualizar campos
         practicaExistente.setEstudiante(estudiante);
@@ -117,6 +123,11 @@ public class PracticaService {
         practicaExistente.setFechaInicio(requestDTO.getFechaInicio());
         practicaExistente.setFechaTermino(requestDTO.getFechaTermino());
         practicaExistente.setDescripcionActividades(requestDTO.getDescripcionActividades());
+        
+        // Actualizar estado si se proporciona y es válido
+        if (requestDTO.getEstado() != null && requestDTO.getEstado() != practicaExistente.getEstado()) {
+            validarCambioEstado(practicaExistente, requestDTO.getEstado());
+        }
         
         Practica practicaActualizada = practicaRepository.save(practicaExistente);
         return PracticaResponseDTO.from(practicaActualizada);
@@ -128,6 +139,26 @@ public class PracticaService {
             throw new ResourceNotFoundException("Practica", "id", id);
         }
         practicaRepository.deleteById(id);
+    }
+    
+    /**
+     * Cambia el estado de una práctica existente.
+     * 
+     * @param id ID de la práctica
+     * @param nuevoEstado Nuevo estado a asignar
+     * @return DTO con los datos actualizados de la práctica
+     * @throws ResourceNotFoundException si la práctica no existe
+     * @throws BusinessException si el cambio de estado no es válido
+     */
+    @Transactional
+    public PracticaResponseDTO cambiarEstadoPractica(Long id, EstadoPractica nuevoEstado) {
+        Practica practica = practicaRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Practica", "id", id));
+        
+        validarCambioEstado(practica, nuevoEstado);
+        
+        Practica practicaActualizada = practicaRepository.save(practica);
+        return PracticaResponseDTO.from(practicaActualizada);
     }
     
     /**
@@ -270,6 +301,56 @@ public class PracticaService {
                         practica.getFechaInicio(), practica.getFechaTermino())
                 );
             }
+        }
+    }
+    
+    /**
+     * Valida que una práctica pueda ser modificada según su estado actual.
+     * 
+     * @param practica La práctica a validar
+     * @throws BusinessException si la práctica no puede ser modificada
+     */
+    private void validarPuedeSerModificada(Practica practica) {
+        if (!practica.puedeSerModificada()) {
+            throw new BusinessException(
+                "PRACTICA_NO_MODIFICABLE",
+                String.format("La práctica en estado %s no puede ser modificada", 
+                    practica.getEstado().getDescripcion())
+            );
+        }
+    }
+    
+    /**
+     * Valida y ejecuta un cambio de estado en la práctica.
+     * 
+     * @param practica La práctica cuyo estado se va a cambiar
+     * @param nuevoEstado El nuevo estado solicitado
+     * @throws BusinessException si el cambio de estado no es válido
+     */
+    private void validarCambioEstado(Practica practica, EstadoPractica nuevoEstado) {
+        if (nuevoEstado == null) {
+            throw new BusinessException(
+                "ESTADO_INVALIDO",
+                "El nuevo estado no puede ser nulo"
+            );
+        }
+        
+        EstadoPractica estadoActual = practica.getEstado();
+        
+        if (estadoActual == nuevoEstado) {
+            return; // No hay cambio de estado
+        }
+        
+        // Intentar cambiar el estado usando el método de la entidad
+        boolean cambioExitoso = practica.cambiarEstado(nuevoEstado);
+        
+        if (!cambioExitoso) {
+            throw new BusinessException(
+                "TRANSICION_ESTADO_INVALIDA",
+                String.format("No se puede cambiar el estado de la práctica de %s a %s. Transición no permitida.",
+                    estadoActual.getDescripcion(),
+                    nuevoEstado.getDescripcion())
+            );
         }
     }
 }

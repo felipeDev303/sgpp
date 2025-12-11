@@ -1,5 +1,6 @@
 package ipss.cl.sgpp.controller;
 
+import ipss.cl.sgpp.dto.request.CambioEstadoRequestDTO;
 import ipss.cl.sgpp.dto.request.PracticaRequestDTO;
 import ipss.cl.sgpp.dto.response.PracticaResponseDTO;
 import ipss.cl.sgpp.service.PracticaService;
@@ -99,5 +100,23 @@ public class PracticaController {
     public ResponseEntity<List<PracticaResponseDTO>> obtenerPracticasPorEstudiante(@PathVariable Long estudianteId) {
         List<PracticaResponseDTO> practicas = practicaService.obtenerPracticasPorEstudiante(estudianteId);
         return ResponseEntity.ok(practicas);
+    }
+    
+    /**
+     * Cambiar el estado de una práctica.
+     * Exclusivo para profesores (se asegurará con Spring Security posteriormente).
+     * 
+     * @param id ID de la práctica
+     * @param request DTO con el nuevo estado
+     * @return ResponseEntity con la práctica actualizada y estado HTTP 200
+     * @throws ResourceNotFoundException si la práctica no existe (manejado por GlobalExceptionHandler)
+     * @throws BusinessException si el cambio de estado no es válido (manejado por GlobalExceptionHandler)
+     */
+    @PatchMapping("/{id}/estado")
+    public ResponseEntity<PracticaResponseDTO> cambiarEstado(
+            @PathVariable Long id,
+            @Valid @RequestBody CambioEstadoRequestDTO request) {
+        PracticaResponseDTO practica = practicaService.cambiarEstadoPractica(id, request.getNuevoEstado());
+        return ResponseEntity.ok(practica);
     }
 }
