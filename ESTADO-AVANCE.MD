@@ -510,7 +510,7 @@ private LocalDate fechaTermino;
 - [x] **PR #16:** V4\_\_Initial_Data.sql (datos de prueba) → `feature/initial-data-migration` ✅
 - [x] **PR #17:** V5\_\_Add_Audit_Fields.sql (auditoría en todas las tablas) → `feature/audit-fields-migration` ✅
 - [x] **PR #18:** Configurar JPA Auditing (@EnableJpaAuditing) → `feature/jpa-auditing-config` ✅
-- [ ] **PR #19:** Agregar campos de auditoría a entidades JPA → `feature/entity-audit-fields`
+- [x] **PR #19:** Agregar campos de auditoría a entidades JPA → `feature/entity-audit-fields` ✅
 - [ ] **PR #20:** Implementar AuditorAware para tracking de usuarios → `feature/auditor-aware-impl`
 
 ### Sprint 4: Seguridad y Autenticación 🔐 Prioridad Alta
@@ -547,12 +547,12 @@ private LocalDate fechaTermino;
 - [ ] **PR #44:** Validación de variables de entorno → `feature/env-validation`
 - [ ] **PR #45:** README.md completo con setup → `feature/readme-documentation`
 
-### Progreso Total: 18/45 PRs completados (40%)
+### Progreso Total: 19/45 PRs completados (42%)
 
-**Último PR completado:** #18 - Configurar JPA Auditing (@EnableJpaAuditing)  
-**Siguiente PR:** #19 - Agregar campos de auditoría a entidades JPA  
-**Rama activa:** feature/jpa-auditing-config  
-**Rama sugerida para siguiente PR:** feature/entity-audit-fields
+**Último PR completado:** #19 - Agregar campos de auditoría a entidades JPA  
+**Siguiente PR:** #20 - Implementar AuditorAware para tracking de usuarios  
+**Rama activa:** feature/entity-audit-fields  
+**Rama sugerida para siguiente PR:** feature/auditor-aware-impl
 
 ---
 
