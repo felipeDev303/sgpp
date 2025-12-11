@@ -16,17 +16,15 @@ git # Estado de Avance del Proyecto SGPP
 | **Estructura Base**     | ✅ Completo  | 100%       | 0%        |
 | **Modelo de Datos**     | ✅ Completo  | 100%       | 0%        |
 | **Capa de Repositorio** | ✅ Completo  | 100%       | 0%        |
-| **Capa de Servicio**    | 🟨 Parcial   | 60%        | 40%       |
-| **Capa de Controlador** | 🟨 Parcial   | 70%        | 30%       |
-| **DTOs**                | 🟨 Parcial   | 35%        | 65%       |
-| **Seguridad**           | ❌ Pendiente | 0%         | 100%      |
-| **Validaciones**        | 🟨 Parcial   | 40%        | 60%       |
+| **Capa de Servicio**    | ✅ Completo  | 100%       | 0%        |
+| **Capa de Controlador** | ✅ Completo  | 100%       | 0%        |
+| **DTOs**                | ✅ Completo  | 100%       | 0%        |
+| **Validaciones**        | ✅ Completo  | 100%       | 0%        |
 | **Manejo de Errores**   | ✅ Completo  | 100%       | 0%        |
-| **Testing**             | ❌ Pendiente | 10%        | 90%       |
-| **Configuración**       | 🟨 Parcial   | 50%        | 50%       |
+| **Configuración**       | 🟨 Parcial   | 70%        | 30%       |
 | **Documentación API**   | ❌ Pendiente | 0%         | 100%      |
 
-**Avance Global:** 🟨 **55%**
+**Avance Global:** 🟨 **62%**
 
 ---
 
@@ -173,7 +171,7 @@ src/main/java/ipss/cl/sgpp/
 
 ## ❌ Componentes Pendientes
 
-### 1. DTOs (Data Transfer Objects) 🟨 35%
+### 1. DTOs (Data Transfer Objects) ✅ 100%
 
 **Ubicación:** `src/main/java/ipss/cl/sgpp/dto/`
 
@@ -181,13 +179,17 @@ src/main/java/ipss/cl/sgpp/
 dto/
 ├── request/
 │   ├── PracticaRequestDTO.java       ✅ (con validaciones)
-│   ├── EstudianteRequestDTO.java     ❌
-│   ├── LoginRequestDTO.java          ❌
-│   └── UpdatePracticaDTO.java        ❌
+│   ├── EstudianteRequestDTO.java     ✅
+│   ├── ProfesorRequestDTO.java       ✅
+│   ├── EmpresaRequestDTO.java        ✅
+│   ├── JefeDirectoRequestDTO.java    ✅
+│   └── CambioEstadoRequestDTO.java   ✅
 ├── response/
 │   ├── PracticaResponseDTO.java      ✅ (con from() method)
-│   ├── EstudianteResponseDTO.java    ❌
-│   └── AuthResponseDTO.java          ❌
+│   ├── EstudianteResponseDTO.java    ✅
+│   ├── ProfesorResponseDTO.java      ✅
+│   ├── EmpresaResponseDTO.java       ✅
+│   └── JefeDirectoResponseDTO.java   ✅
 └── common/
     └── ErrorResponseDTO.java         ✅ (estructura básica)
 ```
@@ -197,24 +199,21 @@ dto/
 - ✅ `PracticaRequestDTO.java` con Bean Validation completa
 - ✅ `PracticaResponseDTO.java` con método factory from()
 - ✅ `ErrorResponseDTO.java` para respuestas de error estandarizadas
+- ✅ `EstudianteRequestDTO.java` y `EstudianteResponseDTO.java`
+- ✅ `ProfesorRequestDTO.java` y `ProfesorResponseDTO.java`
+- ✅ `EmpresaRequestDTO.java` y `EmpresaResponseDTO.java`
+- ✅ `JefeDirectoRequestDTO.java` y `JefeDirectoResponseDTO.java`
+- ✅ `CambioEstadoRequestDTO.java` para cambios de estado
 
 **Pendiente:**
 
 - ❌ DTOs para Estudiante, Profesor, Empresa, JefeDirecto
-- ❌ DTOs de autenticación (Login, Register)
 - ❌ Integrar DTOs en controllers y services
 
-### 2. Seguridad (Spring Security + JWT) ❌ 0%
+### 2. Seguridad ⚠️ No se implementará
 
-**Ubicación requerida:** `src/main/java/ipss/cl/sgpp/security/`
-
-```
-security/
-├── SecurityConfig.java               ❌
-├── JwtTokenProvider.java             ❌
-├── JwtAuthenticationFilter.java      ❌
-└── CustomUserDetailsService.java     ❌
-```
+**Decisión de diseño:** El proyecto no implementará autenticación JWT ni Spring Security en esta fase.
+Se realizará testing manual de endpoints directamente.
 
 **Configuración actual:**
 
@@ -222,14 +221,6 @@ security/
 # Security está DESHABILITADA
 spring.autoconfigure.exclude=...SecurityAutoConfiguration...
 ```
-
-**Pendiente:**
-
-- ❌ Configurar filtros de seguridad
-- ❌ Implementar autenticación JWT
-- ❌ Crear endpoints de login/register
-- ❌ Implementar autorización por roles (ESTUDIANTE, PROFESOR, ADMIN)
-- ❌ Proteger endpoints según perfil
 
 ### 3. Manejo Global de Errores 🟨 40%
 
@@ -271,28 +262,17 @@ exception/
 - ❌ Validación de relaciones (IDs existentes)
 - ❌ Grupos de validación para diferentes operaciones
 
-### 5. Testing ❌ 10%
+### 5. Testing ⚠️ Testing Manual únicamente
 
-**Ubicación:** `src/test/java/ipss/cl/sgpp/`
+**Decisión de diseño:** No se implementarán tests automatizados en esta fase.
+Se realizará testing manual usando Swagger UI y herramientas como Postman.
 
-```
-test/
-├── SgppApplicationTests.java         ✅ (básico)
-├── service/
-│   └── PracticaServiceTest.java      ❌
-├── controller/
-│   └── PracticaControllerTest.java   ❌
-└── repository/
-    └── PracticaRepositoryTest.java   ❌
-```
+**Testing manual incluye:**
 
-**Pendiente:**
-
-- ❌ Tests unitarios de servicios con Mockito
-- ❌ Tests de integración de repositorios con @DataJpaTest
-- ❌ Tests de controladores con MockMvc
-- ❌ Tests de seguridad
-- ❌ Tests de validaciones
+- ✅ Pruebas de endpoints CRUD a través de Swagger UI
+- ✅ Validación de casos de uso principales
+- ✅ Verificación de validaciones y manejo de errores
+- ✅ Pruebas de integridad de datos
 
 ### 6. Documentación de API (Swagger/OpenAPI) ❌ 0%
 
@@ -437,47 +417,28 @@ private LocalDate fechaTermino;
    - Agregar campos de auditoría a entidades
    - Implementar AuditorAware
 
-### Fase 2: Seguridad (Prioridad Alta) 🔴
+### Fase 2: Documentación (Prioridad Alta) 🔴
 
-5. **Implementar Spring Security + JWT** (4-6 horas)
+5. **Agregar Swagger/OpenAPI** (3-4 horas)
+   - Agregar dependencia springdoc-openapi
+   - Configuración de Swagger UI
+   - Documentación de todos los endpoints con @Operation
+   - Agregar ejemplos y schemas a DTOs
+   - Documentar modelos de request/response
 
-   - SecurityConfig
-   - JwtTokenProvider
-   - JwtAuthenticationFilter
-   - CustomUserDetailsService
-   - Endpoints de autenticación
+### Fase 3: Refinamiento (Prioridad Media) 🟡
 
-6. **Proteger Endpoints** (1 hora)
-   - @PreAuthorize por rol
-   - Filtrar datos según usuario
+6. **Configuración Avanzada** (2-3 horas)
 
-### Fase 3: Calidad (Prioridad Media) 🟡
+   - Configurar CORS para frontend
+   - Configurar perfiles dev/prod
+   - Configurar logging con SLF4J
+   - Documentación completa en README.md
 
-7. **Implementar Testing** (4-6 horas)
-
-   - Tests de repositorio
-   - Tests de servicio con Mockito
-   - Tests de controller con MockMvc
-   - Tests de integración
-
-8. **Agregar Swagger/OpenAPI** (1-2 horas)
-   - Configuración
-   - Documentación de endpoints
-   - Ejemplos
-
-### Fase 4: Refinamiento (Prioridad Baja) 🟢
-
-9. **Configuración Avanzada** (2 horas)
-
-   - Perfiles dev/prod
-   - CORS
-   - Actuator
-   - Logging
-
-10. **Optimizaciones** (2 horas)
-    - Queries eficientes
-    - Caché
-    - Paginación
+7. **Testing Manual** (Continuo)
+   - Pruebas manuales de endpoints con Swagger UI
+   - Validación de casos de uso
+   - Verificación de validaciones y excepciones
 
 ---
 
@@ -513,46 +474,43 @@ private LocalDate fechaTermino;
 - [x] **PR #19:** Agregar campos de auditoría a entidades JPA → `feature/entity-audit-fields` ✅
 - [x] **PR #20:** Implementar AuditorAware para tracking de usuarios → `feature/auditor-aware-impl` ✅
 
-### Sprint 4: Seguridad y Autenticación 🔐 Prioridad Alta
+### Sprint 3.5: Correcciones y Simplificaciones 🔧 Prioridad Alta
 
-- [ ] **PR #21:** DTOs de autenticación (LoginRequest, RegisterRequest, AuthResponse) → `feature/auth-dtos`
-- [ ] **PR #22:** JwtTokenProvider (generar y validar tokens) → `feature/jwt-token-provider`
-- [ ] **PR #23:** JwtAuthenticationFilter (interceptar requests) → `feature/jwt-auth-filter`
-- [ ] **PR #24:** CustomUserDetailsService (cargar usuarios) → `feature/custom-user-details`
-- [ ] **PR #25:** SecurityConfig con filtros JWT → `feature/security-config`
-- [ ] **PR #26:** AuthController (login, register) → `feature/auth-controller`
-- [ ] **PR #27:** UnauthorizedException y handler → `feature/unauthorized-exception`
-- [ ] **PR #28:** Proteger endpoints con @PreAuthorize → `feature/endpoint-authorization`
+#### Correcciones Críticas 🔴
 
-### Sprint 5: Testing 🧪
+- [ ] **PR #21:** Implementar borrado lógico en Practica (campo deleted) → `feature/soft-delete-practica`
+- [ ] **PR #22:** Separar controladores por rol (EstudiantePracticaController, ProfesorPracticaController) → `feature/role-based-controllers`
 
-- [ ] **PR #29:** Tests unitarios de PracticaService con Mockito → `feature/test-practica-service`
-- [ ] **PR #30:** Tests unitarios de PracticaController con MockMvc → `feature/test-practica-controller`
-- [ ] **PR #31:** Tests de integración de PracticaRepository → `feature/test-practica-repository`
-- [ ] **PR #32:** Tests de validaciones de DTOs → `feature/test-dto-validations`
-- [ ] **PR #33:** Tests de GlobalExceptionHandler → `feature/test-exception-handler`
-- [ ] **PR #34:** Tests de autenticación JWT → `feature/test-jwt-authentication`
-- [ ] **PR #35:** Tests de autorización y roles → `feature/test-authorization`
-- [ ] **PR #36:** Tests de endpoints protegidos (integration) → `feature/test-secured-endpoints`
+#### Simplificaciones de Sobreingeniería 🟡
 
-### Sprint 6: Documentación y Configuración 📚
+- [ ] **PR #23:** Simplificar Auditable (remover createdBy/updatedBy) → `feature/simplify-auditable`
+- [ ] **PR #24:** Reducir estados de Practica a 3 básicos (PENDIENTE, EN_CURSO, COMPLETADA) → `feature/simplify-estados`
+- [ ] **PR #25:** Convertir servicios auxiliares a solo consultas (eliminar CRUD completo) → `feature/simplify-auxiliary-services`
 
-- [ ] **PR #37:** Agregar dependencia springdoc-openapi → `feature/swagger-dependency`
-- [ ] **PR #38:** Documentar endpoints de Practica con @Operation → `feature/swagger-practica-docs`
-- [ ] **PR #39:** Documentar endpoints de Auth con Swagger → `feature/swagger-auth-docs`
-- [ ] **PR #40:** Configurar CORS para frontend → `feature/cors-config`
-- [ ] **PR #41:** Configurar perfiles dev/prod → `feature/application-profiles`
-- [ ] **PR #42:** Configurar Actuator endpoints → `feature/actuator-config`
-- [ ] **PR #43:** Configurar logging con SLF4J → `feature/logging-config`
-- [ ] **PR #44:** Validación de variables de entorno → `feature/env-validation`
-- [ ] **PR #45:** README.md completo con setup → `feature/readme-documentation`
+### Sprint 4: Documentación API con Swagger 📚
 
-### Progreso Total: 20/45 PRs completados (44%)
+- [ ] **PR #26:** Agregar dependencia springdoc-openapi → `feature/swagger-dependency`
+- [ ] **PR #27:** Configurar Swagger UI y OpenAPI → `feature/swagger-config`
+- [ ] **PR #28:** Documentar endpoints de Practica con @Operation → `feature/swagger-practica-docs`
+- [ ] **PR #29:** Documentar endpoints de Estudiante con Swagger → `feature/swagger-estudiante-docs`
+- [ ] **PR #30:** Documentar endpoints de Profesor con Swagger → `feature/swagger-profesor-docs`
+- [ ] **PR #31:** Documentar endpoints de Empresa con Swagger → `feature/swagger-empresa-docs`
+- [ ] **PR #32:** Documentar endpoints de JefeDirecto con Swagger → `feature/swagger-jefedirecto-docs`
+- [ ] **PR #33:** Agregar ejemplos y schemas a DTOs → `feature/swagger-dto-examples`
+
+### Sprint 5: Configuración y Refinamiento 🔧
+
+- [ ] **PR #34:** Configurar CORS para frontend → `feature/cors-config`
+- [ ] **PR #35:** Configurar perfiles dev/prod → `feature/application-profiles`
+- [ ] **PR #36:** Configurar logging con SLF4J → `feature/logging-config`
+- [ ] **PR #37:** README.md completo con setup → `feature/readme-documentation`
+
+### Progreso Total: 20/37 PRs completados (54%)
 
 **Último PR completado:** #20 - Implementar AuditorAware para tracking de usuarios  
-**Siguiente PR:** #21 - DTOs de autenticación (LoginRequest, RegisterRequest, AuthResponse)  
+**Siguiente PR:** #21 - Implementar borrado lógico en Practica (CRÍTICO)  
 **Rama activa:** feature/auditor-aware-impl  
-**Rama sugerida para siguiente PR:** feature/auth-dtos
+**Rama sugerida para siguiente PR:** feature/soft-delete-practica
 
 ---
 
@@ -585,20 +543,33 @@ private LocalDate fechaTermino;
 
 ### Esta Semana
 
-1. ✅ **HECHO:** Actualizar documentación de estado
-2. ✅ **HECHO:** Crear estructura de DTOs (Practica + Error)
-3. ✅ **HECHO:** Implementar excepciones personalizadas
-4. ✅ **HECHO:** Implementar GlobalExceptionHandler completo
-5. ✅ **HECHO:** Migración V2 con tabla practicas e índices
-6. 🔲 **SIGUIENTE:** DTOs de Estudiante (Request/Response)
+1. ✅ **HECHO:** Sprint 1 completo (DTOs y manejo de errores)
+2. ✅ **HECHO:** Sprint 2 completo (Servicios y controladores)
+3. ✅ **HECHO:** Sprint 3 completo (Migraciones y auditoría)
+4. 🔴 **CRÍTICO:** Sprint 3.5 - Correcciones y simplificaciones
+5. 🔲 **SIGUIENTE:** Sprint 4 - Documentación con Swagger
+
+### Prioridades Inmediatas (Sprint 3.5)
+
+#### 🔴 CRÍTICO - Implementar AHORA:
+
+5. 🔲 PR #21: Borrado lógico en Practica (requisito explícito no cumplido)
+6. 🔲 PR #22: Separación de controladores por rol (cumplir separación de responsabilidades)
+
+#### 🟡 SIMPLIFICACIONES - Reducir complejidad innecesaria:
+
+7. 🔲 PR #23: Simplificar auditoría (createdBy/updatedBy sin uso real)
+8. 🔲 PR #24: Reducir estados de práctica (6→3 estados básicos)
+9. 🔲 PR #25: Simplificar servicios auxiliares (CRUD→Solo consultas)
 
 ### Siguiente Semana
 
-7. 🔲 Completar DTOs para todas las entidades (Estudiante, Profesor, Empresa)
-8. 🔲 Refactorizar PracticaService y PracticaController para usar DTOs
-9. 🔲 Implementar validaciones de lógica de negocio
-10. 🔲 Migración V3 con datos iniciales
-11. 🔲 Configurar JPA Auditing
+10. 🔲 Agregar dependencia springdoc-openapi
+11. 🔲 Configurar Swagger UI
+12. 🔲 Documentar todos los endpoints con @Operation
+13. 🔲 Agregar ejemplos a DTOs
+14. 🔲 Configurar CORS y perfiles
+15. 🔲 Documentación completa en README.md
 
 ---
 
