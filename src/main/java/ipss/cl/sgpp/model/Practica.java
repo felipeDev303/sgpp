@@ -145,6 +145,13 @@ public class Practica extends Auditable {
     
     /**
      * Valida si una transición de estado es válida según las reglas de negocio.
+     * 
+     * Flujo simplificado de transiciones:
+     * - PENDIENTE → EN_CURSO (iniciar práctica)
+     * - EN_CURSO → COMPLETADA (finalizar práctica)
+     * - COMPLETADA → ninguno (estado terminal)
+     * 
+     * También permite mantener el mismo estado (idempotencia).
      */
     private boolean esTransicionValida(EstadoPractica estadoActual, EstadoPractica estadoNuevo) {
         if (estadoActual == estadoNuevo) {
@@ -152,20 +159,9 @@ public class Practica extends Auditable {
         }
         
         return switch (estadoActual) {
-            case PENDIENTE -> estadoNuevo == EstadoPractica.APROBADA || 
-                             estadoNuevo == EstadoPractica.RECHAZADA;
-                             
-            case APROBADA -> estadoNuevo == EstadoPractica.EN_CURSO || 
-                            estadoNuevo == EstadoPractica.RECHAZADA;
-                            
-            case EN_CURSO -> estadoNuevo == EstadoPractica.COMPLETADA || 
-                            estadoNuevo == EstadoPractica.SUSPENDIDA ||
-                            estadoNuevo == EstadoPractica.RECHAZADA;
-                            
-            case SUSPENDIDA -> estadoNuevo == EstadoPractica.EN_CURSO || 
-                              estadoNuevo == EstadoPractica.RECHAZADA;
-                              
-            default -> false; // Estados terminales no permiten transiciones
+            case PENDIENTE -> estadoNuevo == EstadoPractica.EN_CURSO;
+            case EN_CURSO -> estadoNuevo == EstadoPractica.COMPLETADA;
+            case COMPLETADA -> false; // Estado terminal, no permite más transiciones
         };
     }
 }

@@ -24,7 +24,7 @@ git # Estado de Avance del Proyecto SGPP
 | **Configuración**       | 🟨 Parcial   | 75%        | 25%       |
 | **Documentación API**   | ❌ Pendiente | 0%         | 100%      |
 
-**Avance Global:** 🟨 **63%**
+**Avance Global:** 🟨 **65%**
 
 ---
 
@@ -486,7 +486,7 @@ private LocalDate fechaTermino;
 #### Simplificaciones de Sobreingeniería 🟡
 
 - [x] **PR #23:** Simplificar Auditable (remover createdBy/updatedBy) → `feature/simplify-auditable` ✅
-- [ ] **PR #24:** Reducir estados de Practica a 3 básicos (PENDIENTE, EN_CURSO, COMPLETADA) → `feature/simplify-estados`
+- [x] **PR #24:** Reducir estados de Practica a 3 básicos (PENDIENTE, EN_CURSO, COMPLETADA) → `feature/simplify-estados` ✅
 - [ ] **PR #25:** Convertir servicios auxiliares a solo consultas (eliminar CRUD completo) → `feature/simplify-auxiliary-services`
 
 ### Sprint 4: Documentación API con Swagger 📚
@@ -507,12 +507,12 @@ private LocalDate fechaTermino;
 - [ ] **PR #36:** Configurar logging con SLF4J → `feature/logging-config`
 - [ ] **PR #37:** README.md completo con setup → `feature/readme-documentation`
 
-### Progreso Total: 23/37 PRs completados (62%)
+### Progreso Total: 24/37 PRs completados (65%)
 
-**Último PR completado:** #23 - Simplificar Auditable (remover createdBy/updatedBy)  
-**Siguiente PR:** #24 - Reducir estados de Practica a 3 básicos  
-**Rama activa:** feature/simplify-auditable  
-**Rama sugerida para siguiente PR:** feature/simplify-estados
+**Último PR completado:** #24 - Reducir estados de Practica a 3 básicos  
+**Siguiente PR:** #25 - Convertir servicios auxiliares a solo consultas  
+**Rama activa:** feature/simplify-estados  
+**Rama sugerida para siguiente PR:** feature/simplify-auxiliary-services
 
 ---
 

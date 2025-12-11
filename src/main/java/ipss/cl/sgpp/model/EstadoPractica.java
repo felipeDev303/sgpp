@@ -2,37 +2,35 @@ package ipss.cl.sgpp.model;
 
 /**
  * Enum que representa los diferentes estados de una práctica profesional.
+ * 
+ * Simplificado a 3 estados básicos según el flujo natural de una práctica:
+ * PENDIENTE → EN_CURSO → COMPLETADA
+ * 
+ * Nota: Estados APROBADA, RECHAZADA y SUSPENDIDA fueron removidos ya que la
+ * problemática no menciona flujos de aprobación formal ni suspensión temporal.
+ * El foco está en el ciclo de vida básico de una práctica profesional.
+ * 
+ * @author SGPP Team
+ * @since 1.0
  */
 public enum EstadoPractica {
     /**
-     * La práctica ha sido registrada pero aún no ha sido aprobada por el profesor.
+     * La práctica ha sido registrada y está pendiente de iniciar.
+     * Estado inicial cuando se crea una nueva práctica.
      */
-    PENDIENTE("Pendiente de aprobación"),
-    
-    /**
-     * La práctica ha sido aprobada y el estudiante puede comenzar.
-     */
-    APROBADA("Aprobada"),
+    PENDIENTE("Pendiente de inicio"),
     
     /**
      * La práctica está en curso, el estudiante está realizando las actividades.
+     * Estado activo durante el desarrollo de la práctica.
      */
     EN_CURSO("En curso"),
     
     /**
      * La práctica ha sido completada exitosamente.
+     * Estado terminal, no permite más cambios.
      */
-    COMPLETADA("Completada"),
-    
-    /**
-     * La práctica ha sido rechazada o cancelada.
-     */
-    RECHAZADA("Rechazada"),
-    
-    /**
-     * La práctica fue suspendida temporalmente.
-     */
-    SUSPENDIDA("Suspendida");
+    COMPLETADA("Completada");
     
     private final String descripcion;
     
@@ -46,15 +44,17 @@ public enum EstadoPractica {
     
     /**
      * Verifica si el estado es terminal (no permite más cambios).
+     * Solo COMPLETADA es un estado terminal en el flujo simplificado.
      */
     public boolean esEstadoTerminal() {
-        return this == COMPLETADA || this == RECHAZADA;
+        return this == COMPLETADA;
     }
     
     /**
-     * Verifica si el estado permite modificaciones.
+     * Verifica si el estado permite modificaciones a la práctica.
+     * Solo estados no terminales permiten cambios.
      */
     public boolean permiteModificaciones() {
-        return this == PENDIENTE || this == APROBADA || this == EN_CURSO;
+        return this == PENDIENTE || this == EN_CURSO;
     }
 }
