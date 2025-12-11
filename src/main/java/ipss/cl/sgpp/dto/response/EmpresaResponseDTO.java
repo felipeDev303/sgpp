@@ -1,5 +1,6 @@
 package ipss.cl.sgpp.dto.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import ipss.cl.sgpp.model.Empresa;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,15 +15,25 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "DTO de respuesta con información de una empresa")
 public class EmpresaResponseDTO {
     
+    @Schema(description = "ID único de la empresa", example = "1")
     private Long id;
+    
+    @Schema(description = "Nombre o razón social de la empresa", example = "Tech Solutions SpA")
     private String nombre;
+    
+    @Schema(description = "RUT de la empresa", example = "76123456-7")
     private String rut;
+    
+    @Schema(description = "Dirección física de la empresa", example = "Av. Providencia 1234, Santiago")
     private String direccion;
+    
+    @Schema(description = "Email de contacto de la empresa", example = "contacto@techsolutions.cl")
     private String contactoEmail;
     
-    // Información resumida de prácticas asociadas
+    @Schema(description = "Cantidad de prácticas asociadas a esta empresa", example = "10")
     private Integer cantidadPracticas;
     
     /**
