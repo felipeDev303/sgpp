@@ -1,5 +1,6 @@
 package ipss.cl.sgpp.dto.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import ipss.cl.sgpp.model.JefeDirecto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,13 +15,19 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "DTO de respuesta con información de un jefe directo (supervisor en empresa)")
 public class JefeDirectoResponseDTO {
     
+    @Schema(description = "ID único del jefe directo", example = "1")
     private Long id;
+    
+    @Schema(description = "Nombre completo del jefe directo", example = "Carlos Ramírez Soto")
     private String nombre;
+    
+    @Schema(description = "Información de contacto", example = "+56 9 1234 5678")
     private String contacto;
     
-    // Información resumida de prácticas supervisadas
+    @Schema(description = "Cantidad de prácticas supervisadas", example = "3")
     private Integer cantidadPracticasSupervisadas;
     
     /**

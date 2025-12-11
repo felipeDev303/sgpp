@@ -1,5 +1,6 @@
 package ipss.cl.sgpp.dto.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import ipss.cl.sgpp.model.Estudiante;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,17 +15,31 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "DTO de respuesta con información de un estudiante (sin datos sensibles)")
 public class EstudianteResponseDTO {
     
+    @Schema(description = "ID único del estudiante", example = "1")
     private Long id;
+    
+    @Schema(description = "Nombre completo del estudiante", example = "Juan Pérez García")
     private String nombreCompleto;
+    
+    @Schema(description = "Email institucional del estudiante", example = "juan.perez@ipss.cl")
     private String email;
+    
+    @Schema(description = "Rol del usuario en el sistema", example = "ESTUDIANTE")
     private String rol;
+    
+    @Schema(description = "RUT del estudiante", example = "12345678-9")
     private String rut;
+    
+    @Schema(description = "Carrera que cursa", example = "Ingeniería en Informática")
     private String carrera;
+    
+    @Schema(description = "Año de ingreso a la institución", example = "2022")
     private Integer anioIngreso;
     
-    // Información resumida de prácticas
+    @Schema(description = "Cantidad de prácticas asociadas al estudiante", example = "2")
     private Integer cantidadPracticas;
     
     /**

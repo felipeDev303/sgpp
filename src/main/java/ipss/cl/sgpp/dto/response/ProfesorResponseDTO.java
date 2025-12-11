@@ -1,5 +1,6 @@
 package ipss.cl.sgpp.dto.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import ipss.cl.sgpp.model.Profesor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,16 +15,28 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "DTO de respuesta con información de un profesor (sin datos sensibles)")
 public class ProfesorResponseDTO {
     
+    @Schema(description = "ID único del profesor", example = "1")
     private Long id;
+    
+    @Schema(description = "Nombre completo del profesor", example = "María González López")
     private String nombreCompleto;
+    
+    @Schema(description = "Email institucional del profesor", example = "maria.gonzalez@ipss.cl")
     private String email;
+    
+    @Schema(description = "Rol del usuario en el sistema", example = "PROFESOR")
     private String rol;
+    
+    @Schema(description = "Departamento al que pertenece", example = "Departamento de Informática")
     private String departamento;
+    
+    @Schema(description = "Especialidad o área de expertise", example = "Desarrollo de Software")
     private String especialidad;
     
-    // Información resumida de prácticas supervisadas
+    @Schema(description = "Cantidad de prácticas supervisadas por el profesor", example = "5")
     private Integer cantidadPracticasSupervisadas;
     
     /**

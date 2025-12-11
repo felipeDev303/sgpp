@@ -508,7 +508,7 @@ private LocalDate fechaTermino;
 - [x] **PR #30:** Documentar endpoints de Profesor con Swagger → `feature/swagger-profesor-docs` ✅
 - [x] **PR #31:** Documentar endpoints de Empresa con Swagger → `feature/swagger-empresa-docs` ✅
 - [x] **PR #32:** Documentar endpoints de JefeDirecto con Swagger → `feature/swagger-jefedirecto-docs` ✅
-- [ ] **PR #33:** Agregar ejemplos y schemas a DTOs → `feature/swagger-dto-examples`
+- [x] **PR #33:** Agregar ejemplos y schemas a DTOs → `feature/swagger-dto-examples` ✅
 
 ### Sprint 5: Configuración y Refinamiento 🔧
 
@@ -517,16 +517,18 @@ private LocalDate fechaTermino;
 - [x] **PR #36:** ~~Configurar logging con SLF4J~~ → ⚠️ **OMITIDO** (Logging por defecto es suficiente) ⚪
 - [ ] **PR #37:** README.md completo con setup → `feature/readme-documentation`
 
-### Progreso Total: 35/37 PRs (95%)
+### Progreso Total: 36/37 PRs (97%)
 
-- ✅ Completados: 32 PRs
+- ✅ Completados: 33 PRs
 - ⚪ Omitidos: 3 PRs (#34, #35, #36)
-- ❌ Pendientes: 3 PRs (Sprint 4 + README)
+- ❌ Pendientes: 2 PRs (README pendiente)
 
-**Último PR completado:** #32 - Documentar endpoints de JefeDirecto con Swagger  
-**Siguiente PR:** #33 - Agregar ejemplos y schemas a DTOs  
-**Rama activa:** feature/swagger-jefedirecto-docs  
-**Rama sugerida para siguiente PR:** feature/swagger-dto-examples
+**Último PR completado:** #33 - Agregar ejemplos y schemas a DTOs  
+**Siguiente PR:** #37 - README.md completo con setup  
+**Rama activa:** feature/swagger-dto-examples  
+**Rama sugerida para siguiente PR:** feature/readme-documentation
+
+**🎉 Sprint 4 completado al 100% (8/8 PRs)**
 
 ---
 
