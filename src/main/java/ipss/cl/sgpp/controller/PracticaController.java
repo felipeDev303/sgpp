@@ -12,6 +12,24 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controlador REST legacy para gestión de prácticas.
+ * 
+ * @deprecated Este controlador está deprecado. Use en su lugar:
+ *             - {@link EstudiantePracticaController} para operaciones de estudiantes
+ *             - {@link ProfesorPracticaController} para operaciones de profesores
+ * 
+ * Se mantiene temporalmente para compatibilidad con clientes existentes.
+ * Será removido en versiones futuras.
+ * 
+ * Rutas nuevas recomendadas:
+ * - Estudiantes: /api/v1/estudiantes/practicas
+ * - Profesores: /api/v1/profesores/practicas
+ * 
+ * @author SGPP Team
+ * @since 1.0
+ */
+@Deprecated(since = "1.0", forRemoval = true)
 @RestController
 @RequestMapping("/api/v1/practicas")
 @RequiredArgsConstructor
@@ -21,11 +39,14 @@ public class PracticaController {
 
     /**
      * Crear una nueva práctica.
-     * Endpoint para estudiantes y profesores.
+     * 
+     * @deprecated Use {@link EstudiantePracticaController#crearPractica} o
+     *             {@link ProfesorPracticaController#crearPractica} en su lugar.
      * 
      * @param requestDTO Datos de la práctica a crear
      * @return ResponseEntity con la práctica creada y estado HTTP 201
      */
+    @Deprecated(since = "1.0", forRemoval = true)
     @PostMapping 
     public ResponseEntity<PracticaResponseDTO> crearPractica(@Valid @RequestBody PracticaRequestDTO requestDTO) {
         PracticaResponseDTO nuevaPractica = practicaService.guardarPractica(requestDTO);
@@ -34,10 +55,12 @@ public class PracticaController {
 
     /**
      * Obtener todas las prácticas.
-     * Endpoint para profesores (todas) y estudiantes (filtradas por seguridad más adelante).
+     * 
+     * @deprecated Use {@link ProfesorPracticaController#obtenerTodasLasPracticas} en su lugar.
      * 
      * @return ResponseEntity con lista de prácticas y estado HTTP 200
      */
+    @Deprecated(since = "1.0", forRemoval = true)
     @GetMapping 
     public ResponseEntity<List<PracticaResponseDTO>> obtenerTodasLasPracticas() {
         List<PracticaResponseDTO> practicas = practicaService.obtenerTodasLasPracticas();
