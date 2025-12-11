@@ -1,28 +1,26 @@
-package ipss.cl.sgpp.model;
+package ipss.cl.sgpp.dto.request;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import java.util.List;
+import lombok.NoArgsConstructor;
 
-@Entity
+/**
+ * DTO para crear o actualizar un Jefe Directo (supervisor de empresa).
+ * Contiene validaciones de Bean Validation para garantizar la integridad de los datos.
+ */
 @Data
-public class JefeDirecto {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class JefeDirectoRequestDTO {
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @NotBlank(message = "El nombre del jefe directo es obligatorio")
     @Size(min = 3, max = 100, message = "El nombre debe tener entre 3 y 100 caracteres")
-    @Column(nullable = false, length = 100)
     private String nombre;
-
-    @Size(max = 100, message = "El contacto no puede superar 100 caracteres")
-    @Column(length = 100)
-    private String contacto;
     
-    @OneToMany(mappedBy = "jefeDirecto")
-    private List<Practica> practicasSupervisadas;
+    @Size(max = 100, message = "El contacto no puede superar 100 caracteres")
+    private String contacto;
 }
