@@ -507,8 +507,8 @@ private LocalDate fechaTermino;
 ### Sprint 3: Migraciones y Base de Datos 🗄️
 
 - [x] **PR #5:** V2\_\_Create_Practicas_Table.sql ✅ (completado)
-- [ ] **PR #16:** V3\_\_Initial_Data.sql (datos de prueba) → `feature/initial-data-migration`
-- [ ] **PR #17:** V4\_\_Add_Audit_Fields.sql (auditoría en todas las tablas) → `feature/audit-fields-migration`
+- [x] **PR #16:** V4\_\_Initial_Data.sql (datos de prueba) → `feature/initial-data-migration` ✅
+- [ ] **PR #17:** V5\_\_Add_Audit_Fields.sql (auditoría en todas las tablas) → `feature/audit-fields-migration`
 - [ ] **PR #18:** Configurar JPA Auditing (@EnableJpaAuditing) → `feature/jpa-auditing-config`
 - [ ] **PR #19:** Agregar campos de auditoría a entidades JPA → `feature/entity-audit-fields`
 - [ ] **PR #20:** Implementar AuditorAware para tracking de usuarios → `feature/auditor-aware-impl`
@@ -547,12 +547,12 @@ private LocalDate fechaTermino;
 - [ ] **PR #44:** Validación de variables de entorno → `feature/env-validation`
 - [ ] **PR #45:** README.md completo con setup → `feature/readme-documentation`
 
-### Progreso Total: 15/45 PRs completados (33%)
+### Progreso Total: 16/45 PRs completados (36%)
 
-**Último PR completado:** #15 - Implementar EmpresaService y JefeDirectoService  
-**Siguiente PR:** #16 - V3\_\_Initial_Data.sql (datos de prueba)  
-**Rama activa:** feature/empresa-jefe-services  
-**Rama sugerida para siguiente PR:** feature/initial-data-migration
+**Último PR completado:** #16 - V4\_\_Initial_Data.sql (datos de prueba)  
+**Siguiente PR:** #17 - V5\_\_Add_Audit_Fields.sql (auditoría en todas las tablas)  
+**Rama activa:** feature/initial-data-migration  
+**Rama sugerida para siguiente PR:** feature/audit-fields-migration
 
 ---
 
