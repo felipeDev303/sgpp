@@ -497,7 +497,7 @@ private LocalDate fechaTermino;
 ### Sprint 2: Refactorización de Servicios y Controladores 🔄
 
 - [x] **PR #9:** Refactorizar PracticaService para usar DTOs ✅
-- [ ] **PR #10:** Refactorizar PracticaController para usar DTOs y @Valid → `feature/refactor-practica-controller`
+- [x] **PR #10:** Refactorizar PracticaController para usar DTOs y @Valid ✅
 - [ ] **PR #11:** Implementar validaciones de lógica de negocio en PracticaService → `feature/practica-business-validations`
 - [ ] **PR #12:** Agregar validación de fechas y estados en Practica → `feature/practica-date-validations`
 - [ ] **PR #13:** Implementar EstudianteService con DTOs → `feature/estudiante-service`
@@ -547,12 +547,12 @@ private LocalDate fechaTermino;
 - [ ] **PR #44:** Validación de variables de entorno → `feature/env-validation`
 - [ ] **PR #45:** README.md completo con setup → `feature/readme-documentation`
 
-### Progreso Total: 9/45 PRs completados (20%)
+### Progreso Total: 10/45 PRs completados (22%)
 
-**Último PR completado:** #9 - Refactorizar PracticaService para usar DTOs  
-**Siguiente PR:** #10 - Refactorizar PracticaController para usar DTOs y @Valid  
-**Rama activa:** feature/refactor-practica-service  
-**Rama sugerida para siguiente PR:** feature/refactor-practica-controller
+**Último PR completado:** #10 - Refactorizar PracticaController para usar DTOs y @Valid  
+**Siguiente PR:** #11 - Implementar validaciones de lógica de negocio en PracticaService  
+**Rama activa:** feature/refactor-practica-controller  
+**Rama sugerida para siguiente PR:** feature/practica-business-validations
 
 ---
 
