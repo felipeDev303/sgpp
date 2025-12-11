@@ -478,7 +478,7 @@ private LocalDate fechaTermino;
 
 #### Correcciones Críticas 🔴
 
-- [ ] **PR #21:** Implementar borrado lógico en Practica (campo deleted) → `feature/soft-delete-practica`
+- [x] **PR #21:** Implementar borrado lógico en Practica (campo deleted) → `feature/soft-delete-practica` ✅
 - [ ] **PR #22:** Separar controladores por rol (EstudiantePracticaController, ProfesorPracticaController) → `feature/role-based-controllers`
 
 #### Simplificaciones de Sobreingeniería 🟡
@@ -505,12 +505,12 @@ private LocalDate fechaTermino;
 - [ ] **PR #36:** Configurar logging con SLF4J → `feature/logging-config`
 - [ ] **PR #37:** README.md completo con setup → `feature/readme-documentation`
 
-### Progreso Total: 20/37 PRs completados (54%)
+### Progreso Total: 21/37 PRs completados (57%)
 
-**Último PR completado:** #20 - Implementar AuditorAware para tracking de usuarios  
-**Siguiente PR:** #21 - Implementar borrado lógico en Practica (CRÍTICO)  
-**Rama activa:** feature/auditor-aware-impl  
-**Rama sugerida para siguiente PR:** feature/soft-delete-practica
+**Último PR completado:** #21 - Implementar borrado lógico en Practica  
+**Siguiente PR:** #22 - Separar controladores por rol (CRÍTICO)  
+**Rama activa:** feature/soft-delete-practica  
+**Rama sugerida para siguiente PR:** feature/role-based-controllers
 
 ---
 

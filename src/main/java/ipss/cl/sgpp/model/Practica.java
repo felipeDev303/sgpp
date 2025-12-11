@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -66,6 +67,41 @@ public class Practica extends Auditable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "jefe_directo_id", nullable = false)
     private JefeDirecto jefeDirecto;
+    
+    // Campos de borrado lógico
+    @Column(nullable = false)
+    @Builder.Default
+    private Boolean deleted = false;
+    
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+    
+    /**
+     * Marca la práctica como eliminada (soft delete).
+     * Establece deleted=true y registra la fecha de eliminación.
+     */
+    public void marcarComoEliminada() {
+        this.deleted = true;
+        this.deletedAt = LocalDateTime.now();
+    }
+    
+    /**
+     * Restaura una práctica eliminada lógicamente.
+     * Establece deleted=false y limpia la fecha de eliminación.
+     */
+    public void restaurar() {
+        this.deleted = false;
+        this.deletedAt = null;
+    }
+    
+    /**
+     * Verifica si la práctica está eliminada lógicamente.
+     * 
+     * @return true si está eliminada, false si está activa
+     */
+    public boolean estaEliminada() {
+        return Boolean.TRUE.equals(this.deleted);
+    }
     
     /**
      * Verifica si la práctica puede ser modificada según su estado actual.
