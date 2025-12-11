@@ -21,10 +21,10 @@ git # Estado de Avance del Proyecto SGPP
 | **DTOs**                | ✅ Completo  | 100%       | 0%        |
 | **Validaciones**        | ✅ Completo  | 100%       | 0%        |
 | **Manejo de Errores**   | ✅ Completo  | 100%       | 0%        |
-| **Configuración**       | 🟨 Parcial   | 70%        | 30%       |
+| **Configuración**       | 🟨 Parcial   | 75%        | 25%       |
 | **Documentación API**   | ❌ Pendiente | 0%         | 100%      |
 
-**Avance Global:** 🟨 **62%**
+**Avance Global:** 🟨 **63%**
 
 ---
 
@@ -485,7 +485,7 @@ private LocalDate fechaTermino;
 
 #### Simplificaciones de Sobreingeniería 🟡
 
-- [ ] **PR #23:** Simplificar Auditable (remover createdBy/updatedBy) → `feature/simplify-auditable`
+- [x] **PR #23:** Simplificar Auditable (remover createdBy/updatedBy) → `feature/simplify-auditable` ✅
 - [ ] **PR #24:** Reducir estados de Practica a 3 básicos (PENDIENTE, EN_CURSO, COMPLETADA) → `feature/simplify-estados`
 - [ ] **PR #25:** Convertir servicios auxiliares a solo consultas (eliminar CRUD completo) → `feature/simplify-auxiliary-services`
 
@@ -507,12 +507,12 @@ private LocalDate fechaTermino;
 - [ ] **PR #36:** Configurar logging con SLF4J → `feature/logging-config`
 - [ ] **PR #37:** README.md completo con setup → `feature/readme-documentation`
 
-### Progreso Total: 22/37 PRs completados (59%)
+### Progreso Total: 23/37 PRs completados (62%)
 
-**Último PR completado:** #22 - Separar controladores por rol  
-**Siguiente PR:** #23 - Simplificar Auditable (remover createdBy/updatedBy)  
-**Rama activa:** feature/role-based-controllers  
-**Rama sugerida para siguiente PR:** feature/simplify-auditable
+**Último PR completado:** #23 - Simplificar Auditable (remover createdBy/updatedBy)  
+**Siguiente PR:** #24 - Reducir estados de Practica a 3 básicos  
+**Rama activa:** feature/simplify-auditable  
+**Rama sugerida para siguiente PR:** feature/simplify-estados
 
 ---
 
