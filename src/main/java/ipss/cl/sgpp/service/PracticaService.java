@@ -38,13 +38,11 @@ public class PracticaService {
         JefeDirecto jefeDirecto = jefeDirectoRepository.findById(requestDTO.getJefeDirectoId())
             .orElseThrow(() -> new ResourceNotFoundException("JefeDirecto", "id", requestDTO.getJefeDirectoId()));
         
-        // Validación de negocio: verificar que el estudiante no tenga prácticas activas superpuestas
+        // Validaciones de negocio
+        validarFechas(requestDTO.getFechaInicio(), requestDTO.getFechaTermino());
+        validarDuracionPractica(requestDTO.getFechaInicio(), requestDTO.getFechaTermino());
         validarPracticasSuperpuestas(estudiante.getId(), requestDTO.getFechaInicio(), requestDTO.getFechaTermino(), null);
-        
-        // Validación de negocio: fechas
-        if (requestDTO.getFechaTermino().isBefore(requestDTO.getFechaInicio())) {
-            throw new BusinessException("FECHAS_INVALIDAS", "La fecha de término debe ser posterior a la fecha de inicio");
-        }
+        validarDescripcionActividades(requestDTO.getDescripcionActividades());
         
         // Crear entidad desde DTO
         Practica practica = Practica.builder()
@@ -104,13 +102,12 @@ public class PracticaService {
         JefeDirecto jefeDirecto = jefeDirectoRepository.findById(requestDTO.getJefeDirectoId())
             .orElseThrow(() -> new ResourceNotFoundException("JefeDirecto", "id", requestDTO.getJefeDirectoId()));
         
-        // Validación de negocio: verificar que no haya prácticas superpuestas (excluyendo la actual)
+        // Validaciones de negocio
+        validarFechas(requestDTO.getFechaInicio(), requestDTO.getFechaTermino());
+        validarDuracionPractica(requestDTO.getFechaInicio(), requestDTO.getFechaTermino());
         validarPracticasSuperpuestas(estudiante.getId(), requestDTO.getFechaInicio(), requestDTO.getFechaTermino(), id);
-        
-        // Validación de negocio: fechas
-        if (requestDTO.getFechaTermino().isBefore(requestDTO.getFechaInicio())) {
-            throw new BusinessException("FECHAS_INVALIDAS", "La fecha de término debe ser posterior a la fecha de inicio");
-        }
+        validarDescripcionActividades(requestDTO.getDescripcionActividades());
+        validarCambioEstudiante(practicaExistente.getEstudiante().getId(), estudiante.getId());
         
         // Actualizar campos
         practicaExistente.setEstudiante(estudiante);
@@ -131,6 +128,113 @@ public class PracticaService {
             throw new ResourceNotFoundException("Practica", "id", id);
         }
         practicaRepository.deleteById(id);
+    }
+    
+    /**
+     * Valida que la fecha de término sea posterior a la fecha de inicio.
+     * 
+     * @param fechaInicio Fecha de inicio de la práctica
+     * @param fechaTermino Fecha de término de la práctica
+     * @throws BusinessException si la fecha de término es anterior o igual a la de inicio
+     */
+    private void validarFechas(java.time.LocalDate fechaInicio, java.time.LocalDate fechaTermino) {
+        if (fechaTermino.isBefore(fechaInicio)) {
+            throw new BusinessException(
+                "FECHAS_INVALIDAS", 
+                "La fecha de término debe ser posterior a la fecha de inicio"
+            );
+        }
+        
+        if (fechaTermino.isEqual(fechaInicio)) {
+            throw new BusinessException(
+                "FECHAS_INVALIDAS", 
+                "La fecha de término no puede ser igual a la fecha de inicio"
+            );
+        }
+    }
+    
+    /**
+     * Valida que la duración de la práctica esté dentro de los límites permitidos.
+     * Mínimo: 4 semanas (28 días)
+     * Máximo: 6 meses (180 días)
+     * 
+     * @param fechaInicio Fecha de inicio de la práctica
+     * @param fechaTermino Fecha de término de la práctica
+     * @throws BusinessException si la duración no está dentro de los límites
+     */
+    private void validarDuracionPractica(java.time.LocalDate fechaInicio, java.time.LocalDate fechaTermino) {
+        long diasDuracion = java.time.temporal.ChronoUnit.DAYS.between(fechaInicio, fechaTermino);
+        
+        final int DURACION_MINIMA_DIAS = 28; // 4 semanas
+        final int DURACION_MAXIMA_DIAS = 180; // ~6 meses
+        
+        if (diasDuracion < DURACION_MINIMA_DIAS) {
+            throw new BusinessException(
+                "DURACION_INVALIDA", 
+                String.format("La práctica debe tener una duración mínima de %d días (4 semanas). Duración actual: %d días", 
+                    DURACION_MINIMA_DIAS, diasDuracion)
+            );
+        }
+        
+        if (diasDuracion > DURACION_MAXIMA_DIAS) {
+            throw new BusinessException(
+                "DURACION_INVALIDA", 
+                String.format("La práctica no puede superar los %d días (6 meses). Duración actual: %d días", 
+                    DURACION_MAXIMA_DIAS, diasDuracion)
+            );
+        }
+    }
+    
+    /**
+     * Valida que la descripción de actividades cumpla con los requisitos mínimos.
+     * 
+     * @param descripcion Descripción de las actividades de la práctica
+     * @throws BusinessException si la descripción no cumple los requisitos
+     */
+    private void validarDescripcionActividades(String descripcion) {
+        if (descripcion == null || descripcion.trim().isEmpty()) {
+            throw new BusinessException(
+                "DESCRIPCION_INVALIDA", 
+                "La descripción de actividades es obligatoria"
+            );
+        }
+        
+        final int LONGITUD_MINIMA = 50;
+        final int LONGITUD_MAXIMA = 5000;
+        
+        int longitud = descripcion.trim().length();
+        
+        if (longitud < LONGITUD_MINIMA) {
+            throw new BusinessException(
+                "DESCRIPCION_INVALIDA", 
+                String.format("La descripción debe tener al menos %d caracteres. Longitud actual: %d caracteres", 
+                    LONGITUD_MINIMA, longitud)
+            );
+        }
+        
+        if (longitud > LONGITUD_MAXIMA) {
+            throw new BusinessException(
+                "DESCRIPCION_INVALIDA", 
+                String.format("La descripción no puede superar los %d caracteres. Longitud actual: %d caracteres", 
+                    LONGITUD_MAXIMA, longitud)
+            );
+        }
+    }
+    
+    /**
+     * Valida que no se cambie el estudiante asignado a una práctica existente.
+     * 
+     * @param estudianteIdOriginal ID del estudiante original
+     * @param estudianteIdNuevo ID del nuevo estudiante
+     * @throws BusinessException si se intenta cambiar el estudiante
+     */
+    private void validarCambioEstudiante(Long estudianteIdOriginal, Long estudianteIdNuevo) {
+        if (!estudianteIdOriginal.equals(estudianteIdNuevo)) {
+            throw new BusinessException(
+                "CAMBIO_ESTUDIANTE_NO_PERMITIDO", 
+                "No se permite cambiar el estudiante asignado a una práctica existente"
+            );
+        }
     }
     
     /**
@@ -155,13 +259,14 @@ public class PracticaService {
             }
             
             // Verificar superposición de fechas
+            // Dos períodos se superponen si: inicio1 <= fin2 AND inicio2 <= fin1
             boolean seSuperpone = !(fechaTermino.isBefore(practica.getFechaInicio()) || 
                                     fechaInicio.isAfter(practica.getFechaTermino()));
             
             if (seSuperpone) {
                 throw new BusinessException(
                     "PRACTICAS_SUPERPUESTAS", 
-                    String.format("El estudiante ya tiene una práctica en el período %s - %s", 
+                    String.format("El estudiante ya tiene una práctica registrada en el período del %s al %s que se superpone con las fechas solicitadas", 
                         practica.getFechaInicio(), practica.getFechaTermino())
                 );
             }

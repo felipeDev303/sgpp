@@ -498,7 +498,7 @@ private LocalDate fechaTermino;
 
 - [x] **PR #9:** Refactorizar PracticaService para usar DTOs ✅
 - [x] **PR #10:** Refactorizar PracticaController para usar DTOs y @Valid ✅
-- [ ] **PR #11:** Implementar validaciones de lógica de negocio en PracticaService → `feature/practica-business-validations`
+- [x] **PR #11:** Implementar validaciones de lógica de negocio en PracticaService ✅
 - [ ] **PR #12:** Agregar validación de fechas y estados en Practica → `feature/practica-date-validations`
 - [ ] **PR #13:** Implementar EstudianteService con DTOs → `feature/estudiante-service`
 - [ ] **PR #14:** Implementar ProfesorService con DTOs → `feature/profesor-service`
@@ -547,12 +547,12 @@ private LocalDate fechaTermino;
 - [ ] **PR #44:** Validación de variables de entorno → `feature/env-validation`
 - [ ] **PR #45:** README.md completo con setup → `feature/readme-documentation`
 
-### Progreso Total: 10/45 PRs completados (22%)
+### Progreso Total: 11/45 PRs completados (24%)
 
-**Último PR completado:** #10 - Refactorizar PracticaController para usar DTOs y @Valid  
-**Siguiente PR:** #11 - Implementar validaciones de lógica de negocio en PracticaService  
-**Rama activa:** feature/refactor-practica-controller  
-**Rama sugerida para siguiente PR:** feature/practica-business-validations
+**Último PR completado:** #11 - Implementar validaciones de lógica de negocio en PracticaService  
+**Siguiente PR:** #12 - Agregar validación de fechas y estados en Practica  
+**Rama activa:** feature/practica-business-validations  
+**Rama sugerida para siguiente PR:** feature/practica-date-validations
 
 ---
 

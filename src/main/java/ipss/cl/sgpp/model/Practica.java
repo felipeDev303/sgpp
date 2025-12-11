@@ -1,14 +1,20 @@
 package ipss.cl.sgpp.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.FutureOrPresent; // Para fechas
-import jakarta.validation.constraints.NotBlank; // Para Strings
-import jakarta.validation.constraints.NotNull; // Para IDs y objetos
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Practica {
 
     @Id
@@ -35,7 +41,7 @@ public class Practica {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profesor_id")
-    private Profesor profesorSupervisor;
+    private Profesor profesor;
     
     @NotNull(message = "La empresa es obligatoria")
     @ManyToOne(fetch = FetchType.LAZY)
