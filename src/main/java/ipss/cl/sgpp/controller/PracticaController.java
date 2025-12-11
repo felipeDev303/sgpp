@@ -1,83 +1,103 @@
 package ipss.cl.sgpp.controller;
 
-import ipss.cl.sgpp.model.Practica;
+import ipss.cl.sgpp.dto.request.PracticaRequestDTO;
+import ipss.cl.sgpp.dto.response.PracticaResponseDTO;
 import ipss.cl.sgpp.service.PracticaService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController // Indica que esta clase manejará peticiones REST
-@RequestMapping("/api/v1/practicas") // Define la URL base para todos los métodos
+@RestController
+@RequestMapping("/api/v1/practicas")
+@RequiredArgsConstructor
 public class PracticaController {
 
-    @Autowired
-    private PracticaService practicaService; // Inyectamos nuestro servicio de lógica de negocio
+    private final PracticaService practicaService;
 
-    // =====================================================================
-    // C - CREATE (Crear Práctica)
-    // Para Estudiantes y Profesores (Indicador 1)
-    // =====================================================================
-    // Mapea peticiones POST a /api/v1/practicas
+    /**
+     * Crear una nueva práctica.
+     * Endpoint para estudiantes y profesores.
+     * 
+     * @param requestDTO Datos de la práctica a crear
+     * @return ResponseEntity con la práctica creada y estado HTTP 201
+     */
     @PostMapping 
-    public ResponseEntity<Practica> crearPractica(@RequestBody Practica practica) {
-        Practica nuevaPractica = practicaService.guardarPractica(practica);
-        // Retornamos el estado 201 Created junto con la práctica guardada
+    public ResponseEntity<PracticaResponseDTO> crearPractica(@Valid @RequestBody PracticaRequestDTO requestDTO) {
+        PracticaResponseDTO nuevaPractica = practicaService.guardarPractica(requestDTO);
         return new ResponseEntity<>(nuevaPractica, HttpStatus.CREATED); 
     }
 
-    // =====================================================================
-    // R - READ (Leer Prácticas)
-    // Para Profesores (todas) y Estudiantes (sus propias - lo haremos más tarde con seguridad)
-    // =====================================================================
-    // Mapea peticiones GET a /api/v1/practicas
+    /**
+     * Obtener todas las prácticas.
+     * Endpoint para profesores (todas) y estudiantes (filtradas por seguridad más adelante).
+     * 
+     * @return ResponseEntity con lista de prácticas y estado HTTP 200
+     */
     @GetMapping 
-    public ResponseEntity<List<Practica>> obtenerTodasLasPracticas() {
-        // En un paso posterior, filtraremos esta lista según el rol del usuario (Profesor vs Estudiante)
-        List<Practica> practicas = practicaService.obtenerTodasLasPracticas();
-        return ResponseEntity.ok(practicas); // Retorna estado 200 OK
+    public ResponseEntity<List<PracticaResponseDTO>> obtenerTodasLasPracticas() {
+        List<PracticaResponseDTO> practicas = practicaService.obtenerTodasLasPracticas();
+        return ResponseEntity.ok(practicas);
     }
     
-    // Mapea peticiones GET a /api/v1/practicas/{id}
+    /**
+     * Obtener una práctica por su ID.
+     * 
+     * @param id ID de la práctica
+     * @return ResponseEntity con la práctica encontrada y estado HTTP 200
+     * @throws ResourceNotFoundException si la práctica no existe (manejado por GlobalExceptionHandler)
+     */
     @GetMapping("/{id}")
-    public ResponseEntity<Practica> obtenerPracticaPorId(@PathVariable Long id) {
-        return practicaService.obtenerPracticaPorId(id)
-            .map(ResponseEntity::ok) // Si encuentra, retorna 200 OK
-            .orElseGet(() -> ResponseEntity.notFound().build()); // Si no encuentra, retorna 404 Not Found
+    public ResponseEntity<PracticaResponseDTO> obtenerPracticaPorId(@PathVariable Long id) {
+        PracticaResponseDTO practica = practicaService.obtenerPracticaPorId(id);
+        return ResponseEntity.ok(practica);
     }
 
-    // =====================================================================
-    // U - UPDATE (Actualizar Práctica)
-    // Exclusivo para Profesores (lo aseguraremos con Spring Security en el paso 6)
-    // =====================================================================
-    // Mapea peticiones PUT a /api/v1/practicas/{id}
+    /**
+     * Actualizar una práctica existente.
+     * Exclusivo para profesores (se asegurará con Spring Security posteriormente).
+     * 
+     * @param id ID de la práctica a actualizar
+     * @param requestDTO Nuevos datos de la práctica
+     * @return ResponseEntity con la práctica actualizada y estado HTTP 200
+     * @throws ResourceNotFoundException si la práctica no existe (manejado por GlobalExceptionHandler)
+     * @throws BusinessException si hay errores de validación de negocio (manejado por GlobalExceptionHandler)
+     */
     @PutMapping("/{id}")
-    public ResponseEntity<Practica> actualizarPractica(@PathVariable Long id, @RequestBody Practica practicaActualizada) {
-        try {
-            Practica practica = practicaService.actualizarPractica(id, practicaActualizada);
-            return ResponseEntity.ok(practica);
-        } catch (RuntimeException e) {
-            // Manejo básico de error si el ID no existe
-            return ResponseEntity.notFound().build(); 
-        }
+    public ResponseEntity<PracticaResponseDTO> actualizarPractica(
+            @PathVariable Long id, 
+            @Valid @RequestBody PracticaRequestDTO requestDTO) {
+        PracticaResponseDTO practica = practicaService.actualizarPractica(id, requestDTO);
+        return ResponseEntity.ok(practica);
     }
 
-    // =====================================================================
-    // D - DELETE (Eliminar Práctica)
-    // Exclusivo para Profesores (lo aseguraremos con Spring Security en el paso 6)
-    // =====================================================================
-    // Mapea peticiones DELETE a /api/v1/practicas/{id}
+    /**
+     * Eliminar una práctica.
+     * Exclusivo para profesores (se asegurará con Spring Security posteriormente).
+     * 
+     * @param id ID de la práctica a eliminar
+     * @return ResponseEntity con estado HTTP 204 No Content
+     * @throws ResourceNotFoundException si la práctica no existe (manejado por GlobalExceptionHandler)
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarPractica(@PathVariable Long id) {
-        try {
-            practicaService.eliminarPractica(id);
-            // Retorna estado 204 No Content, que es la convención para una eliminación exitosa
-            return ResponseEntity.noContent().build(); 
-        } catch (RuntimeException e) {
-            // Manejo básico si el ID no existe
-            return ResponseEntity.notFound().build();
-        }
+        practicaService.eliminarPractica(id);
+        return ResponseEntity.noContent().build(); 
+    }
+    
+    /**
+     * Obtener todas las prácticas de un estudiante específico.
+     * 
+     * @param estudianteId ID del estudiante
+     * @return ResponseEntity con lista de prácticas del estudiante y estado HTTP 200
+     * @throws ResourceNotFoundException si el estudiante no existe (manejado por GlobalExceptionHandler)
+     */
+    @GetMapping("/estudiante/{estudianteId}")
+    public ResponseEntity<List<PracticaResponseDTO>> obtenerPracticasPorEstudiante(@PathVariable Long estudianteId) {
+        List<PracticaResponseDTO> practicas = practicaService.obtenerPracticasPorEstudiante(estudianteId);
+        return ResponseEntity.ok(practicas);
     }
 }
