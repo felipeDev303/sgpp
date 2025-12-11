@@ -64,25 +64,46 @@ public class PracticaService {
         return PracticaResponseDTO.from(practicaGuardada);
     }
 
+    /**
+     * Obtiene todas las prácticas activas (no eliminadas lógicamente).
+     * 
+     * @return Lista de DTOs con todas las prácticas activas
+     */
     public List<PracticaResponseDTO> obtenerTodasLasPracticas() {
-        return practicaRepository.findAll().stream()
+        return practicaRepository.findAllActive().stream()
             .map(PracticaResponseDTO::from)
             .collect(Collectors.toList());
     }
     
+    /**
+     * Obtiene todas las prácticas activas de un estudiante específico.
+     * Excluye prácticas eliminadas lógicamente.
+     * 
+     * @param estudianteId ID del estudiante
+     * @return Lista de DTOs con las prácticas activas del estudiante
+     * @throws ResourceNotFoundException si el estudiante no existe
+     */
     public List<PracticaResponseDTO> obtenerPracticasPorEstudiante(Long estudianteId) {
         // Validar que el estudiante exista
         if (!estudianteRepository.existsById(estudianteId)) {
             throw new ResourceNotFoundException("Estudiante", "id", estudianteId);
         }
         
-        return practicaRepository.findByEstudianteId(estudianteId).stream()
+        return practicaRepository.findByEstudianteIdAndNotDeleted(estudianteId).stream()
             .map(PracticaResponseDTO::from)
             .collect(Collectors.toList());
     }
     
+    /**
+     * Obtiene una práctica activa por su ID.
+     * No retorna prácticas eliminadas lógicamente.
+     * 
+     * @param id ID de la práctica
+     * @return DTO con los datos de la práctica
+     * @throws ResourceNotFoundException si la práctica no existe o está eliminada
+     */
     public PracticaResponseDTO obtenerPracticaPorId(Long id) {
-        Practica practica = practicaRepository.findById(id)
+        Practica practica = practicaRepository.findByIdAndNotDeleted(id)
             .orElseThrow(() -> new ResourceNotFoundException("Practica", "id", id));
         
         return PracticaResponseDTO.from(practica);
@@ -90,8 +111,8 @@ public class PracticaService {
 
     @Transactional
     public PracticaResponseDTO actualizarPractica(Long id, PracticaRequestDTO requestDTO) {
-        // Verificar que la práctica existe
-        Practica practicaExistente = practicaRepository.findById(id)
+        // Verificar que la práctica existe y no está eliminada
+        Practica practicaExistente = practicaRepository.findByIdAndNotDeleted(id)
             .orElseThrow(() -> new ResourceNotFoundException("Practica", "id", id));
         
         // Validar que todas las entidades relacionadas existan
@@ -133,12 +154,48 @@ public class PracticaService {
         return PracticaResponseDTO.from(practicaActualizada);
     }
 
+    /**
+     * Elimina lógicamente una práctica (soft delete).
+     * La práctica se marca como eliminada pero permanece en la base de datos.
+     * Cumple con requisito explícito: "Eliminar Práctica (borrado lógico)".
+     * 
+     * @param id ID de la práctica a eliminar
+     * @throws ResourceNotFoundException si la práctica no existe o ya está eliminada
+     */
     @Transactional
     public void eliminarPractica(Long id) {
-        if (!practicaRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Practica", "id", id);
+        Practica practica = practicaRepository.findByIdAndNotDeleted(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Practica", "id", id));
+        
+        // Marcar como eliminada (soft delete)
+        practica.marcarComoEliminada();
+        practicaRepository.save(practica);
+    }
+    
+    /**
+     * Restaura una práctica eliminada lógicamente.
+     * Solo para casos especiales de administración.
+     * 
+     * @param id ID de la práctica a restaurar
+     * @return DTO con los datos de la práctica restaurada
+     * @throws ResourceNotFoundException si la práctica no existe
+     * @throws BusinessException si la práctica no está eliminada
+     */
+    @Transactional
+    public PracticaResponseDTO restaurarPractica(Long id) {
+        Practica practica = practicaRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Practica", "id", id));
+        
+        if (!practica.estaEliminada()) {
+            throw new BusinessException(
+                "PRACTICA_NO_ELIMINADA",
+                "La práctica no está eliminada, no se puede restaurar"
+            );
         }
-        practicaRepository.deleteById(id);
+        
+        practica.restaurar();
+        Practica practicaRestaurada = practicaRepository.save(practica);
+        return PracticaResponseDTO.from(practicaRestaurada);
     }
     
     /**
@@ -152,7 +209,7 @@ public class PracticaService {
      */
     @Transactional
     public PracticaResponseDTO cambiarEstadoPractica(Long id, EstadoPractica nuevoEstado) {
-        Practica practica = practicaRepository.findById(id)
+        Practica practica = practicaRepository.findByIdAndNotDeleted(id)
             .orElseThrow(() -> new ResourceNotFoundException("Practica", "id", id));
         
         validarCambioEstado(practica, nuevoEstado);
@@ -281,7 +338,8 @@ public class PracticaService {
                                               java.time.LocalDate fechaInicio, 
                                               java.time.LocalDate fechaTermino, 
                                               Long practicaIdExcluir) {
-        List<Practica> practicasEstudiante = practicaRepository.findByEstudianteId(estudianteId);
+        // Solo validar contra prácticas activas (no eliminadas)
+        List<Practica> practicasEstudiante = practicaRepository.findByEstudianteIdAndNotDeleted(estudianteId);
         
         for (Practica practica : practicasEstudiante) {
             // Excluir la práctica actual si estamos actualizando
