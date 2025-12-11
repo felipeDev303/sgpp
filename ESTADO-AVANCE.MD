@@ -504,7 +504,7 @@ private LocalDate fechaTermino;
 - [x] **PR #26:** Agregar dependencia springdoc-openapi → `feature/swagger-dependency` ✅
 - [x] **PR #27:** Configurar Swagger UI y OpenAPI → `feature/swagger-config` ✅
 - [x] **PR #28:** Documentar endpoints de Practica con @Operation → `feature/swagger-practica-docs` ✅
-- [ ] **PR #29:** Documentar endpoints de Estudiante con Swagger → `feature/swagger-estudiante-docs`
+- [x] **PR #29:** Documentar endpoints de Estudiante con Swagger → `feature/swagger-estudiante-docs` ✅
 - [ ] **PR #30:** Documentar endpoints de Profesor con Swagger → `feature/swagger-profesor-docs`
 - [ ] **PR #31:** Documentar endpoints de Empresa con Swagger → `feature/swagger-empresa-docs`
 - [ ] **PR #32:** Documentar endpoints de JefeDirecto con Swagger → `feature/swagger-jefedirecto-docs`
@@ -517,16 +517,16 @@ private LocalDate fechaTermino;
 - [x] **PR #36:** ~~Configurar logging con SLF4J~~ → ⚠️ **OMITIDO** (Logging por defecto es suficiente) ⚪
 - [ ] **PR #37:** README.md completo con setup → `feature/readme-documentation`
 
-### Progreso Total: 31/37 PRs (84%)
+### Progreso Total: 32/37 PRs (86%)
 
-- ✅ Completados: 28 PRs
+- ✅ Completados: 29 PRs
 - ⚪ Omitidos: 3 PRs (#34, #35, #36)
-- ❌ Pendientes: 6 PRs (Sprint 4 + README)
+- ❌ Pendientes: 5 PRs (Sprint 4 + README)
 
-**Último PR completado:** #28 - Documentar endpoints de Practica con @Operation  
-**Siguiente PR:** #29 - Documentar endpoints de Estudiante con Swagger  
-**Rama activa:** feature/swagger-practica-docs  
-**Rama sugerida para siguiente PR:** feature/swagger-estudiante-docs
+**Último PR completado:** #29 - Documentar endpoints de Estudiante con Swagger  
+**Siguiente PR:** #30 - Documentar endpoints de Profesor con Swagger  
+**Rama activa:** feature/swagger-estudiante-docs  
+**Rama sugerida para siguiente PR:** feature/swagger-profesor-docs
 
 ---
 
