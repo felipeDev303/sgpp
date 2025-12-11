@@ -36,7 +36,9 @@ git # Estado de Avance del Proyecto SGPP
 src/main/java/ipss/cl/sgpp/
 ├── SgppApplication.java              ✅
 ├── controller/
-│   └── PracticaController.java       ✅
+│   ├── PracticaController.java       ✅ (deprecated)
+│   ├── EstudiantePracticaController  ✅
+│   └── ProfesorPracticaController    ✅
 ├── model/
 │   ├── Usuario.java                  ✅
 │   ├── Estudiante.java               ✅
@@ -479,7 +481,7 @@ private LocalDate fechaTermino;
 #### Correcciones Críticas 🔴
 
 - [x] **PR #21:** Implementar borrado lógico en Practica (campo deleted) → `feature/soft-delete-practica` ✅
-- [ ] **PR #22:** Separar controladores por rol (EstudiantePracticaController, ProfesorPracticaController) → `feature/role-based-controllers`
+- [x] **PR #22:** Separar controladores por rol (EstudiantePracticaController, ProfesorPracticaController) → `feature/role-based-controllers` ✅
 
 #### Simplificaciones de Sobreingeniería 🟡
 
@@ -505,12 +507,12 @@ private LocalDate fechaTermino;
 - [ ] **PR #36:** Configurar logging con SLF4J → `feature/logging-config`
 - [ ] **PR #37:** README.md completo con setup → `feature/readme-documentation`
 
-### Progreso Total: 21/37 PRs completados (57%)
+### Progreso Total: 22/37 PRs completados (59%)
 
-**Último PR completado:** #21 - Implementar borrado lógico en Practica  
-**Siguiente PR:** #22 - Separar controladores por rol (CRÍTICO)  
-**Rama activa:** feature/soft-delete-practica  
-**Rama sugerida para siguiente PR:** feature/role-based-controllers
+**Último PR completado:** #22 - Separar controladores por rol  
+**Siguiente PR:** #23 - Simplificar Auditable (remover createdBy/updatedBy)  
+**Rama activa:** feature/role-based-controllers  
+**Rama sugerida para siguiente PR:** feature/simplify-auditable
 
 ---
 
