@@ -4,11 +4,11 @@
 
 ### 1.1 Pre-requisitos
 
-- [ ] Verificar que la base de datos esté corriendo
+- [x] Verificar que la base de datos esté corriendo
 - [ ] Verificar que todas las migraciones de Flyway se ejecuten correctamente
 - [ ] Revisar application.properties para confirmar configuración
 - [ ] Levantar la aplicación Spring Boot
-- [ ] Acceder a Swagger UI en http://localhost:8080/swagger-ui.html
+- [ ] Acceder a Swagger UI en http://localhost:8080/swagger-ui/index.html
 
 ### 1.2 Herramientas Recomendadas
 

@@ -45,11 +45,9 @@ ADD COLUMN updated_by VARCHAR(100);
 -- ============================================
 -- 5. AGREGAR CAMPOS A TABLA PRACTICAS
 -- ============================================
--- Nota: jefes_directos ya tiene created_at y updated_at desde V2
+-- Nota: practicas ya tiene created_at y updated_at desde V2
 -- Solo agregamos created_by y updated_by
 ALTER TABLE practicas
-ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-ADD COLUMN updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 ADD COLUMN created_by VARCHAR(100),
 ADD COLUMN updated_by VARCHAR(100);
 

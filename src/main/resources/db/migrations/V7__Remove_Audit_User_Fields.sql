@@ -11,7 +11,16 @@
 -- =====================================================
 
 -- =====================================================
--- 1. ELIMINAR COLUMNAS DE AUDITORÍA DE USUARIO
+-- 1. ELIMINAR VISTAS QUE DEPENDEN DE COLUMNAS AUDIT USER
+-- =====================================================
+-- Las vistas creadas en V6 dependen de created_by y updated_by
+-- Deben eliminarse antes de eliminar las columnas
+
+DROP VIEW IF EXISTS v_practicas_activas CASCADE;
+DROP VIEW IF EXISTS v_practicas_eliminadas CASCADE;
+
+-- =====================================================
+-- 2. ELIMINAR COLUMNAS DE AUDITORÍA DE USUARIO
 -- =====================================================
 
 -- Tabla: usuarios
@@ -99,6 +108,60 @@ COMMENT ON COLUMN jefes_directos.updated_at IS 'Fecha de última modificación (
 
 COMMENT ON COLUMN practicas.created_at IS 'Fecha de creación del registro (UTC). Auditado automáticamente por JPA.';
 COMMENT ON COLUMN practicas.updated_at IS 'Fecha de última modificación (UTC). Auditado automáticamente por JPA.';
+
+-- =====================================================
+-- 4. RECREAR VISTAS SIN COLUMNAS DE AUDITORÍA DE USUARIO
+-- =====================================================
+
+-- Recrear vista de prácticas activas sin created_by y updated_by
+CREATE OR REPLACE VIEW v_practicas_activas AS
+SELECT 
+    p.id,
+    p.fecha_inicio,
+    p.fecha_termino,
+    p.descripcion_actividades,
+    p.estado,
+    p.estudiante_id,
+    p.profesor_id,
+    p.empresa_id,
+    p.jefe_directo_id,
+    p.created_at,
+    p.updated_at,
+    e.nombre AS estudiante_nombre,
+    est.rut AS estudiante_rut,
+    prof.nombre AS profesor_nombre,
+    emp.nombre AS empresa_nombre
+FROM practicas p
+LEFT JOIN estudiantes est ON p.estudiante_id = est.id
+LEFT JOIN usuarios e ON est.id = e.id
+LEFT JOIN profesores pro ON p.profesor_id = pro.id
+LEFT JOIN usuarios prof ON pro.id = prof.id
+LEFT JOIN empresas emp ON p.empresa_id = emp.id
+WHERE p.deleted = FALSE;
+
+COMMENT ON VIEW v_practicas_activas IS 
+'Vista que muestra solo las prácticas activas (no eliminadas lógicamente) con información relacionada. Actualizada en V7 sin campos de auditoría de usuario.';
+
+-- Recrear vista de prácticas eliminadas sin created_by y updated_by
+CREATE OR REPLACE VIEW v_practicas_eliminadas AS
+SELECT 
+    p.id,
+    p.fecha_inicio,
+    p.fecha_termino,
+    p.estado,
+    p.deleted_at AS fecha_eliminacion,
+    e.nombre AS estudiante_nombre,
+    emp.nombre AS empresa_nombre,
+    EXTRACT(DAY FROM (p.deleted_at - p.created_at)) AS dias_antes_eliminacion
+FROM practicas p
+LEFT JOIN estudiantes est ON p.estudiante_id = est.id
+LEFT JOIN usuarios e ON est.id = e.id
+LEFT JOIN empresas emp ON p.empresa_id = emp.id
+WHERE p.deleted = TRUE
+ORDER BY p.deleted_at DESC;
+
+COMMENT ON VIEW v_practicas_eliminadas IS 
+'Vista de auditoría que muestra prácticas eliminadas lógicamente con información del contexto. Actualizada en V7 sin campos de auditoría de usuario.';
 
 -- =====================================================
 -- FIN DE MIGRATION V7
