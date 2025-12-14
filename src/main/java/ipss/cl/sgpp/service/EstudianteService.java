@@ -39,7 +39,7 @@ public class EstudianteService {
      */
     public List<EstudianteResponseDTO> obtenerTodosLosEstudiantes() {
         return estudianteRepository.findAll().stream()
-            .map(EstudianteResponseDTO::from)
+            .map(EstudianteResponseDTO::fromWithoutPracticas)
             .collect(Collectors.toList());
     }
     
@@ -54,7 +54,7 @@ public class EstudianteService {
         Estudiante estudiante = estudianteRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Estudiante", "id", id));
         
-        return EstudianteResponseDTO.from(estudiante);
+        return EstudianteResponseDTO.fromWithoutPracticas(estudiante);
     }
     
     /**
@@ -71,7 +71,7 @@ public class EstudianteService {
             throw new ResourceNotFoundException("Estudiante", "email", email);
         }
         
-        return EstudianteResponseDTO.from(estudiante);
+        return EstudianteResponseDTO.fromWithoutPracticas(estudiante);
     }
     
     /**

@@ -27,7 +27,7 @@ public class EmpresaService {
      */
     public List<EmpresaResponseDTO> obtenerTodasLasEmpresas() {
         return empresaRepository.findAll().stream()
-            .map(EmpresaResponseDTO::from)
+            .map(EmpresaResponseDTO::fromWithoutPracticas)
             .collect(Collectors.toList());
     }
     
@@ -42,7 +42,7 @@ public class EmpresaService {
         Empresa empresa = empresaRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Empresa", "id", id));
         
-        return EmpresaResponseDTO.from(empresa);
+        return EmpresaResponseDTO.fromWithoutPracticas(empresa);
     }
     
     /**
@@ -59,7 +59,7 @@ public class EmpresaService {
             throw new ResourceNotFoundException("Empresa", "rut", rut);
         }
         
-        return EmpresaResponseDTO.from(empresa);
+        return EmpresaResponseDTO.fromWithoutPracticas(empresa);
     }
     
     /**
@@ -76,6 +76,6 @@ public class EmpresaService {
             throw new ResourceNotFoundException("Empresa", "nombre", nombre);
         }
         
-        return EmpresaResponseDTO.from(empresa);
+        return EmpresaResponseDTO.fromWithoutPracticas(empresa);
     }
 }

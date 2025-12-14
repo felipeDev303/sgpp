@@ -21,18 +21,13 @@ import java.util.List;
 
 /**
  * Controlador REST para consultas de empresas.
- * 
- * NOTA: Los endpoints POST, PUT, DELETE ya NO están soportados en EmpresaService
- * (simplificado a solo consultas). La gestión de empresas se realiza externamente.
- * Solo endpoints GET están funcionales.
- * 
- * @deprecated Los métodos CRUD (crear, actualizar, eliminar) fueron removidos en PR #25
+ * Proporciona endpoints de solo lectura para obtener información de empresas
+ * registradas en el sistema, necesarias para la gestión de prácticas profesionales.
  */
 @Tag(
     name = "Empresas",
-    description = "Endpoints para consultar información de empresas. " +
-                  "**NOTA**: Los métodos CRUD (POST, PUT, DELETE) fueron removidos en PR #25 " +
-                  "ya que la gestión de empresas se realiza externamente. Solo se mantienen endpoints de consulta."
+    description = "Consulta de información de empresas registradas en el sistema. " +
+                  "Estos endpoints permiten listar y buscar empresas disponibles para prácticas profesionales."
 )
 @RestController
 @RequestMapping("/api/v1/empresas")
@@ -40,32 +35,6 @@ import java.util.List;
 public class EmpresaController {
 
     private final EmpresaService empresaService;
-    
-    /**
-     * Crea una nueva empresa en el sistema.
-     * 
-     * @param requestDTO Datos de la empresa a crear
-     * @return ResponseEntity con la empresa creada y estado 201 CREATED
-     */
-    @Operation(
-        summary = "⚠️ [NO FUNCIONAL] Crear empresa",
-        description = "**ADVERTENCIA**: Este endpoint fue deshabilitado en PR #25. " +
-                      "La gestión de empresas se realiza externamente. " +
-                      "Use únicamente los endpoints GET para consultas."
-    )
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "500",
-            description = "Método no implementado (lanza UnsupportedOperationException)",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))
-        )
-    })
-    @Deprecated
-    @PostMapping
-    public ResponseEntity<EmpresaResponseDTO> crearEmpresa(
-            @Valid @RequestBody EmpresaRequestDTO requestDTO) {
-        throw new UnsupportedOperationException("Endpoint deshabilitado en PR #25. Use solo endpoints GET para consultas.");
-    }
     
     /**
      * Obtiene la lista de todas las empresas registradas.
@@ -171,58 +140,5 @@ public class EmpresaController {
             @Parameter(description = "Nombre de la empresa", example = "Empresa Ejemplo S.A.") @PathVariable String nombre) {
         EmpresaResponseDTO responseDTO = empresaService.obtenerEmpresaPorNombre(nombre);
         return ResponseEntity.ok(responseDTO);
-    }
-    
-    /**
-     * Actualiza los datos de una empresa existente.
-     * 
-     * @param id ID de la empresa a actualizar
-     * @param requestDTO Nuevos datos de la empresa
-     * @return ResponseEntity con la empresa actualizada y estado 200 OK
-     */
-    @Operation(
-        summary = "⚠️ [NO FUNCIONAL] Actualizar empresa",
-        description = "**ADVERTENCIA**: Este endpoint fue deshabilitado en PR #25. " +
-                      "La gestión de empresas se realiza externamente. " +
-                      "Use únicamente los endpoints GET para consultas."
-    )
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "500",
-            description = "Método no implementado (lanza UnsupportedOperationException)",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))
-        )
-    })
-    @Deprecated
-    @PutMapping("/{id}")
-    public ResponseEntity<EmpresaResponseDTO> actualizarEmpresa(
-            @PathVariable Long id,
-            @Valid @RequestBody EmpresaRequestDTO requestDTO) {
-        throw new UnsupportedOperationException("Endpoint deshabilitado en PR #25. Use solo endpoints GET para consultas.");
-    }
-    
-    /**
-     * Elimina una empresa del sistema.
-     * 
-     * @param id ID de la empresa a eliminar
-     * @return ResponseEntity vacío con estado 204 NO CONTENT
-     */
-    @Operation(
-        summary = "⚠️ [NO FUNCIONAL] Eliminar empresa",
-        description = "**ADVERTENCIA**: Este endpoint fue deshabilitado en PR #25. " +
-                      "La gestión de empresas se realiza externamente. " +
-                      "Use únicamente los endpoints GET para consultas."
-    )
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "500",
-            description = "Método no implementado (lanza UnsupportedOperationException)",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))
-        )
-    })
-    @Deprecated
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarEmpresa(@PathVariable Long id) {
-        throw new UnsupportedOperationException("Endpoint deshabilitado en PR #25. Use solo endpoints GET para consultas.");
     }
 }

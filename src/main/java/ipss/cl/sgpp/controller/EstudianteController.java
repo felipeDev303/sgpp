@@ -21,45 +21,20 @@ import java.util.List;
 
 /**
  * Controlador REST para consultas de estudiantes.
- * 
- * NOTA: Los endpoints POST, PUT, DELETE ya NO están soportados en EstudianteService
- * (simplificado a solo consultas). La gestión de estudiantes se realiza externamente.
- * Solo endpoints GET están funcionales.
- * 
- * @deprecated Los métodos CRUD (crear, actualizar, eliminar) fueron removidos en PR #25
+ * Proporciona endpoints de solo lectura para obtener información de estudiantes
+ * registrados en el sistema, necesarios para la gestión de prácticas profesionales.
  */
-@Tag(name = "Estudiantes", description = "Endpoints de consulta para estudiantes (solo lectura - CRUD removido en PR #25)")
+@Tag(
+    name = "Estudiantes",
+    description = "Consulta de información de estudiantes registrados en el sistema. " +
+                  "Estos endpoints permiten listar y buscar estudiantes disponibles para prácticas profesionales."
+)
 @RestController
 @RequestMapping("/api/v1/estudiantes")
 @RequiredArgsConstructor
 public class EstudianteController {
 
     private final EstudianteService estudianteService;
-    
-    /**
-     * Crea un nuevo estudiante en el sistema.
-     * 
-     * @param requestDTO Datos del estudiante a crear
-     * @return ResponseEntity con el estudiante creado y estado 201 CREATED
-     * @deprecated Funcionalidad removida en PR #25. Este endpoint fallará en runtime.
-     */
-    @Deprecated
-    @Operation(
-            summary = "[NO FUNCIONAL] Crear estudiante",
-            description = "⚠️ **DEPRECADO**: Este endpoint NO está funcional. La funcionalidad CRUD fue removida en PR #25. La gestión de estudiantes se realiza externamente (sistema de RRHH, matrícula, etc.)."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "Método no implementado - servicio simplificado a solo consultas",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))
-            )
-    })
-    @PostMapping
-    public ResponseEntity<EstudianteResponseDTO> crearEstudiante(
-            @Valid @RequestBody EstudianteRequestDTO requestDTO) {
-        throw new UnsupportedOperationException("Endpoint deshabilitado en PR #25. Use solo endpoints GET para consultas.");
-    }
     
     /**
      * Obtiene la lista de todos los estudiantes registrados.
@@ -171,59 +146,5 @@ public class EstudianteController {
             @PathVariable String rut) {
         EstudianteResponseDTO responseDTO = estudianteService.obtenerEstudiantePorRut(rut);
         return ResponseEntity.ok(responseDTO);
-    }
-    
-    /**
-     * Actualiza los datos de un estudiante existente.
-     * 
-     * @param id ID del estudiante a actualizar
-     * @param requestDTO Nuevos datos del estudiante
-     * @return ResponseEntity con el estudiante actualizado y estado 200 OK
-     * @deprecated Funcionalidad removida en PR #25. Este endpoint fallará en runtime.
-     */
-    @Deprecated
-    @Operation(
-            summary = "[NO FUNCIONAL] Actualizar estudiante",
-            description = "⚠️ **DEPRECADO**: Este endpoint NO está funcional. La funcionalidad CRUD fue removida en PR #25. La gestión de estudiantes se realiza externamente."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "Método no implementado - servicio simplificado a solo consultas",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))
-            )
-    })
-    @PutMapping("/{id}")
-    public ResponseEntity<EstudianteResponseDTO> actualizarEstudiante(
-            @Parameter(description = "ID del estudiante", required = true, example = "1")
-            @PathVariable Long id,
-            @Valid @RequestBody EstudianteRequestDTO requestDTO) {
-        throw new UnsupportedOperationException("Endpoint deshabilitado en PR #25. Use solo endpoints GET para consultas.");
-    }
-    
-    /**
-     * Elimina un estudiante del sistema.
-     * 
-     * @param id ID del estudiante a eliminar
-     * @return ResponseEntity vacío con estado 204 NO CONTENT
-     * @deprecated Funcionalidad removida en PR #25. Este endpoint fallará en runtime.
-     */
-    @Deprecated
-    @Operation(
-            summary = "[NO FUNCIONAL] Eliminar estudiante",
-            description = "⚠️ **DEPRECADO**: Este endpoint NO está funcional. La funcionalidad CRUD fue removida en PR #25. La gestión de estudiantes se realiza externamente."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "Método no implementado - servicio simplificado a solo consultas",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))
-            )
-    })
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarEstudiante(
-            @Parameter(description = "ID del estudiante", required = true, example = "1")
-            @PathVariable Long id) {
-        throw new UnsupportedOperationException("Endpoint deshabilitado en PR #25. Use solo endpoints GET para consultas.");
     }
 }
