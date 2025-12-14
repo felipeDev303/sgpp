@@ -26,6 +26,6 @@ public class Profesor extends Usuario {
     private String especialidad;
 
     // Un profesor puede supervisar múltiples prácticas 
-    @OneToMany(mappedBy = "profesorSupervisor")
+    @OneToMany(mappedBy = "profesor")
     private List<Practica> practicasSupervisadas;
 }

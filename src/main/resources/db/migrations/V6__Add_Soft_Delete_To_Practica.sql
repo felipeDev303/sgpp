@@ -57,9 +57,9 @@ SELECT
     p.updated_at,
     p.created_by,
     p.updated_by,
-    e.nombre_completo AS estudiante_nombre,
-    e.rut AS estudiante_rut,
-    prof.nombre_completo AS profesor_nombre,
+    e.nombre AS estudiante_nombre,
+    est.rut AS estudiante_rut,
+    prof.nombre AS profesor_nombre,
     emp.nombre AS empresa_nombre
 FROM practicas p
 LEFT JOIN estudiantes est ON p.estudiante_id = est.id
@@ -81,7 +81,7 @@ SELECT
     p.estado,
     p.deleted_at AS fecha_eliminacion,
     p.updated_by AS eliminado_por,
-    e.nombre_completo AS estudiante_nombre,
+    e.nombre AS estudiante_nombre,
     emp.nombre AS empresa_nombre,
     EXTRACT(DAY FROM (p.deleted_at - p.created_at)) AS dias_antes_eliminacion
 FROM practicas p
