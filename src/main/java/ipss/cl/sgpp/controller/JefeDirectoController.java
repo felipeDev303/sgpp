@@ -21,19 +21,13 @@ import java.util.List;
 
 /**
  * Controlador REST para consultas de jefes directos.
- * 
- * NOTA: Los endpoints POST, PUT, DELETE ya NO están soportados en JefeDirectoService
- * (simplificado a solo consultas). La gestión de jefes directos se realiza con las prácticas.
- * Solo endpoints GET están funcionales.
- * 
- * @deprecated Los métodos CRUD (crear, actualizar, eliminar) fueron removidos en PR #25
+ * Proporciona endpoints de solo lectura para obtener información de jefes directos
+ * (supervisores en empresas) registrados en el sistema.
  */
 @Tag(
     name = "Jefes Directos",
-    description = "Endpoints para consultar información de jefes directos (supervisores de empresas). " +
-                  "**NOTA**: Los métodos CRUD (POST, PUT, DELETE) fueron removidos en PR #25 " +
-                  "ya que la gestión de jefes directos se realiza automáticamente al crear prácticas. " +
-                  "Solo se mantienen endpoints de consulta."
+    description = "Consulta de información de jefes directos (supervisores en empresas). " +
+                  "Estos endpoints permiten listar y buscar jefes directos disponibles para supervisar prácticas profesionales."
 )
 @RestController
 @RequestMapping("/api/v1/jefes-directos")
@@ -42,31 +36,6 @@ public class JefeDirectoController {
 
     private final JefeDirectoService jefeDirectoService;
     
-    /**
-     * Crea un nuevo jefe directo en el sistema.
-     * 
-     * @param requestDTO Datos del jefe directo a crear
-     * @return ResponseEntity con el jefe directo creado y estado 201 CREATED
-     */
-    @Operation(
-        summary = "⚠️ [NO FUNCIONAL] Crear jefe directo",
-        description = "**ADVERTENCIA**: Este endpoint fue deshabilitado en PR #25. " +
-                      "La gestión de jefes directos se realiza automáticamente al crear prácticas. " +
-                      "Use únicamente los endpoints GET para consultas."
-    )
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "500",
-            description = "Método no implementado (lanza UnsupportedOperationException)",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))
-        )
-    })
-    @Deprecated
-    @PostMapping
-    public ResponseEntity<JefeDirectoResponseDTO> crearJefeDirecto(
-            @Valid @RequestBody JefeDirectoRequestDTO requestDTO) {
-        throw new UnsupportedOperationException("Endpoint deshabilitado en PR #25. Use solo endpoints GET para consultas.");
-    }
     
     /**
      * Obtiene la lista de todos los jefes directos registrados.
@@ -141,58 +110,5 @@ public class JefeDirectoController {
         
         List<JefeDirectoResponseDTO> jefesDirectos = jefeDirectoService.buscarJefesDirectosPorNombre(nombre);
         return ResponseEntity.ok(jefesDirectos);
-    }
-    
-    /**
-     * Actualiza los datos de un jefe directo existente.
-     * 
-     * @param id ID del jefe directo a actualizar
-     * @param requestDTO Nuevos datos del jefe directo
-     * @return ResponseEntity con el jefe directo actualizado y estado 200 OK
-     */
-    @Operation(
-        summary = "⚠️ [NO FUNCIONAL] Actualizar jefe directo",
-        description = "**ADVERTENCIA**: Este endpoint fue deshabilitado en PR #25. " +
-                      "La gestión de jefes directos se realiza automáticamente al crear prácticas. " +
-                      "Use únicamente los endpoints GET para consultas."
-    )
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "500",
-            description = "Método no implementado (lanza UnsupportedOperationException)",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))
-        )
-    })
-    @Deprecated
-    @PutMapping("/{id}")
-    public ResponseEntity<JefeDirectoResponseDTO> actualizarJefeDirecto(
-            @PathVariable Long id,
-            @Valid @RequestBody JefeDirectoRequestDTO requestDTO) {
-        throw new UnsupportedOperationException("Endpoint deshabilitado en PR #25. Use solo endpoints GET para consultas.");
-    }
-    
-    /**
-     * Elimina un jefe directo del sistema.
-     * 
-     * @param id ID del jefe directo a eliminar
-     * @return ResponseEntity vacío con estado 204 NO CONTENT
-     */
-    @Operation(
-        summary = "⚠️ [NO FUNCIONAL] Eliminar jefe directo",
-        description = "**ADVERTENCIA**: Este endpoint fue deshabilitado en PR #25. " +
-                      "La gestión de jefes directos se realiza automáticamente al crear prácticas. " +
-                      "Use únicamente los endpoints GET para consultas."
-    )
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "500",
-            description = "Método no implementado (lanza UnsupportedOperationException)",
-            content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))
-        )
-    })
-    @Deprecated
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarJefeDirecto(@PathVariable Long id) {
-        throw new UnsupportedOperationException("Endpoint deshabilitado en PR #25. Use solo endpoints GET para consultas.");
     }
 }

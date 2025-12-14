@@ -27,7 +27,7 @@ public class JefeDirectoService {
      */
     public List<JefeDirectoResponseDTO> obtenerTodosLosJefesDirectos() {
         return jefeDirectoRepository.findAll().stream()
-            .map(JefeDirectoResponseDTO::from)
+            .map(JefeDirectoResponseDTO::fromWithoutPracticas)
             .collect(Collectors.toList());
     }
     
@@ -42,7 +42,7 @@ public class JefeDirectoService {
         JefeDirecto jefeDirecto = jefeDirectoRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("JefeDirecto", "id", id));
         
-        return JefeDirectoResponseDTO.from(jefeDirecto);
+        return JefeDirectoResponseDTO.fromWithoutPracticas(jefeDirecto);
     }
     
     /**

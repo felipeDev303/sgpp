@@ -2,7 +2,8 @@
 
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.8-brightgreen.svg)](https://spring.io/projects/spring-boot)
 [![Java](https://img.shields.io/badge/Java-21-orange.svg)](https://openjdk.org/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue.svg)](https://www.postgresql.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17.7-blue.svg)](https://www.postgresql.org/)
+[![Hibernate](https://img.shields.io/badge/Hibernate-6.6.36-purple.svg)](https://hibernate.org/)
 [![License](https://img.shields.io/badge/License-Academic-yellow.svg)](LICENSE)
 
 Sistema backend RESTful para la gestión integral de prácticas profesionales en instituciones educativas. Permite a estudiantes gestionar sus prácticas y a profesores supervisar el progreso de las mismas mediante una API documentada con OpenAPI/Swagger.
@@ -75,7 +76,7 @@ Sistema backend RESTful para la gestión integral de prácticas profesionales en
 
 ### Base de Datos
 
-- **PostgreSQL 16** - Base de datos relacional
+- **PostgreSQL 17.7** - Base de datos relacional
 - **Flyway 9.22.3** - Migraciones versionadas
 
 ### Documentación
@@ -175,7 +176,7 @@ Antes de instalar, asegúrate de tener:
 
 - ✅ **Java 21** o superior ([Descargar OpenJDK](https://adoptium.net/))
 - ✅ **Maven 3.9+** ([Descargar Maven](https://maven.apache.org/download.cgi))
-- ✅ **PostgreSQL 16** ([Descargar PostgreSQL](https://www.postgresql.org/download/))
+- ✅ **PostgreSQL 17** ([Descargar PostgreSQL](https://www.postgresql.org/download/))
 - ✅ **Git** ([Descargar Git](https://git-scm.com/downloads))
 
 ### Verificar instalación
@@ -183,7 +184,7 @@ Antes de instalar, asegúrate de tener:
 ```bash
 java -version    # Debe mostrar: openjdk version "21.x.x"
 mvn -version     # Debe mostrar: Apache Maven 3.9.x
-psql --version   # Debe mostrar: psql (PostgreSQL) 16.x
+psql --version   # Debe mostrar: psql (PostgreSQL) 17.x
 git --version    # Debe mostrar: git version 2.x.x
 ```
 
@@ -311,18 +312,35 @@ java -jar target/sgpp-0.0.1-SNAPSHOT.jar
 La aplicación iniciará en `http://localhost:8080`
 
 ```bash
-# Healthcheck
-curl http://localhost:8080/actuator/health
+# Probar endpoint de empresas
+curl http://localhost:8080/api/v1/empresas
 
-# Debe responder:
-{"status":"UP"}
+# Debe responder con código 200 y JSON con lista de empresas
 ```
 
 ### Acceder a Swagger UI
 
-Abre en tu navegador: **http://localhost:8080/swagger-ui.html**
+Abre en tu navegador: **http://localhost:8080/swagger-ui/index.html**
 
 Verás la documentación interactiva de toda la API con ejemplos y posibilidad de probar endpoints directamente.
+
+### Probar con Postman
+
+Puedes importar la colección de endpoints desde [API-TEST-REPORT.md](API-TEST-REPORT.md) o probar manualmente:
+
+```bash
+# GET - Listar empresas
+GET http://localhost:8080/api/v1/empresas
+
+# GET - Listar estudiantes
+GET http://localhost:8080/api/v1/estudiantes
+
+# GET - Listar profesores
+GET http://localhost:8080/api/v1/profesores
+
+# GET - Listar jefes directos
+GET http://localhost:8080/api/v1/jefes-directos
+```
 
 ---
 
@@ -482,6 +500,7 @@ El sistema incluye datos iniciales en `V4__Initial_Data.sql`:
 
 ## 📚 Documentación Adicional
 
+- **[API-TEST-REPORT.md](API-TEST-REPORT.md)** - Reporte de pruebas de API con ejemplos
 - **[CONTEXT.MD](CONTEXT.MD)** - Arquitectura detallada y tecnologías
 - **[IMPLEMENTACION.MD](IMPLEMENTACION.MD)** - Guía de implementación y despliegue
 - **[INVESTIGACION-PLANIFICACION.MD](INVESTIGACION-PLANIFICACION.MD)** - Plan de investigación inicial
@@ -491,20 +510,19 @@ El sistema incluye datos iniciales en `V4__Initial_Data.sql`:
 
 ## 📊 Estado del Proyecto
 
-### Progreso: 97% completado (36/37 PRs)
+### ✅ Proyecto Completado - 100%
 
-✅ **Sprints Completados:**
+**Sprints Completados:**
 
-- Sprint 1: DTOs y Manejo de Errores (8/8 PRs)
-- Sprint 2: Servicios y Controladores (7/7 PRs)
-- Sprint 3: Migraciones y Auditoría (6/6 PRs)
-- Sprint 3.5: Correcciones y Simplificaciones (3/3 PRs)
-- Sprint 4: Documentación Swagger (8/8 PRs)
-- Sprint 5: Limpieza de código deprecado (1/1 PR)
+- ✅ Sprint 1: DTOs y Manejo de Errores (8/8 PRs)
+- ✅ Sprint 2: Servicios y Controladores (7/7 PRs)
+- ✅ Sprint 3: Migraciones y Auditoría (6/6 PRs)
+- ✅ Sprint 3.5: Correcciones y Simplificaciones (3/3 PRs)
+- ✅ Sprint 4: Documentación Swagger (8/8 PRs)
+- ✅ Sprint 5: Limpieza de código deprecado (4/4 PRs)
+- ✅ Sprint 6: Testing y Documentación final
 
-🔲 **Pendiente:**
-
-- Sprint 6: Documentación final (README.md) - Este PR
+**Última actualización:** 14 de diciembre de 2025
 
 ### Características Implementadas
 
@@ -519,6 +537,8 @@ El sistema incluye datos iniciales en `V4__Initial_Data.sql`:
 | Documentación Swagger   | ✅ 100% | 4      |
 | Separación por Roles    | ✅ 100% | 3.5    |
 | Limpieza Código         | ✅ 100% | 5      |
+| Testing API             | ✅ 100% | 6      |
+| Documentación README    | ✅ 100% | 6      |
 
 ### Fuera de Alcance (Opcional)
 

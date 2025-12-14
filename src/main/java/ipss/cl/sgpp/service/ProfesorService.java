@@ -27,7 +27,7 @@ public class ProfesorService {
      */
     public List<ProfesorResponseDTO> obtenerTodosLosProfesores() {
         return profesorRepository.findAll().stream()
-            .map(ProfesorResponseDTO::from)
+            .map(ProfesorResponseDTO::fromWithoutPracticas)
             .collect(Collectors.toList());
     }
     
@@ -42,7 +42,7 @@ public class ProfesorService {
         Profesor profesor = profesorRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Profesor", "id", id));
         
-        return ProfesorResponseDTO.from(profesor);
+        return ProfesorResponseDTO.fromWithoutPracticas(profesor);
     }
     
     /**
@@ -59,7 +59,7 @@ public class ProfesorService {
             throw new ResourceNotFoundException("Profesor", "email", email);
         }
         
-        return ProfesorResponseDTO.from(profesor);
+        return ProfesorResponseDTO.fromWithoutPracticas(profesor);
     }
     
     /**

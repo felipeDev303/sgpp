@@ -21,45 +21,20 @@ import java.util.List;
 
 /**
  * Controlador REST para consultas de profesores.
- * 
- * NOTA: Los endpoints POST, PUT, DELETE ya NO están soportados en ProfesorService
- * (simplificado a solo consultas). La gestión de profesores se realiza externamente.
- * Solo endpoints GET están funcionales.
- * 
- * @deprecated Los métodos CRUD (crear, actualizar, eliminar) fueron removidos en PR #25
+ * Proporciona endpoints de solo lectura para obtener información de profesores
+ * supervisores registrados en el sistema, necesarios para la gestión de prácticas profesionales.
  */
-@Tag(name = "Profesores", description = "Endpoints de consulta para profesores supervisores (solo lectura - CRUD removido en PR #25)")
+@Tag(
+    name = "Profesores",
+    description = "Consulta de información de profesores supervisores registrados en el sistema. " +
+                  "Estos endpoints permiten listar y buscar profesores disponibles para supervisar prácticas profesionales."
+)
 @RestController
 @RequestMapping("/api/v1/profesores")
 @RequiredArgsConstructor
 public class ProfesorController {
 
     private final ProfesorService profesorService;
-    
-    /**
-     * Crea un nuevo profesor en el sistema.
-     * 
-     * @param requestDTO Datos del profesor a crear
-     * @return ResponseEntity con el profesor creado y estado 201 CREATED
-     * @deprecated Funcionalidad removida en PR #25. Este endpoint fallará en runtime.
-     */
-    @Deprecated
-    @Operation(
-            summary = "[NO FUNCIONAL] Crear profesor",
-            description = "⚠️ **DEPRECADO**: Este endpoint NO está funcional. La funcionalidad CRUD fue removida en PR #25. La gestión de profesores se realiza externamente (sistema de RRHH, nómina, etc.)."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "Método no implementado - servicio simplificado a solo consultas",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))
-            )
-    })
-    @PostMapping
-    public ResponseEntity<ProfesorResponseDTO> crearProfesor(
-            @Valid @RequestBody ProfesorRequestDTO requestDTO) {
-        throw new UnsupportedOperationException("Endpoint deshabilitado en PR #25. Use solo endpoints GET para consultas.");
-    }
     
     /**
      * Obtiene la lista de todos los profesores registrados.
@@ -167,59 +142,5 @@ public class ProfesorController {
         
         List<ProfesorResponseDTO> profesores = profesorService.obtenerProfesoresPorDepartamento(departamento);
         return ResponseEntity.ok(profesores);
-    }
-    
-    /**
-     * Actualiza los datos de un profesor existente.
-     * 
-     * @param id ID del profesor a actualizar
-     * @param requestDTO Nuevos datos del profesor
-     * @return ResponseEntity con el profesor actualizado y estado 200 OK
-     * @deprecated Funcionalidad removida en PR #25. Este endpoint fallará en runtime.
-     */
-    @Deprecated
-    @Operation(
-            summary = "[NO FUNCIONAL] Actualizar profesor",
-            description = "⚠️ **DEPRECADO**: Este endpoint NO está funcional. La funcionalidad CRUD fue removida en PR #25. La gestión de profesores se realiza externamente."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "Método no implementado - servicio simplificado a solo consultas",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))
-            )
-    })
-    @PutMapping("/{id}")
-    public ResponseEntity<ProfesorResponseDTO> actualizarProfesor(
-            @Parameter(description = "ID del profesor", required = true, example = "1")
-            @PathVariable Long id,
-            @Valid @RequestBody ProfesorRequestDTO requestDTO) {
-        throw new UnsupportedOperationException("Endpoint deshabilitado en PR #25. Use solo endpoints GET para consultas.");
-    }
-    
-    /**
-     * Elimina un profesor del sistema.
-     * 
-     * @param id ID del profesor a eliminar
-     * @return ResponseEntity vacío con estado 204 NO CONTENT
-     * @deprecated Funcionalidad removida en PR #25. Este endpoint fallará en runtime.
-     */
-    @Deprecated
-    @Operation(
-            summary = "[NO FUNCIONAL] Eliminar profesor",
-            description = "⚠️ **DEPRECADO**: Este endpoint NO está funcional. La funcionalidad CRUD fue removida en PR #25. La gestión de profesores se realiza externamente."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "Método no implementado - servicio simplificado a solo consultas",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))
-            )
-    })
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarProfesor(
-            @Parameter(description = "ID del profesor", required = true, example = "1")
-            @PathVariable Long id) {
-        throw new UnsupportedOperationException("Endpoint deshabilitado en PR #25. Use solo endpoints GET para consultas.");
     }
 }
